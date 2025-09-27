@@ -1,7 +1,9 @@
 package br.com.fco_romario.loja_ceda_artes;
 
 import br.com.fco_romario.loja_ceda_artes.domain.Categoria;
+import br.com.fco_romario.loja_ceda_artes.domain.Produto;
 import br.com.fco_romario.loja_ceda_artes.repositories.CategoriaRepository;
+import br.com.fco_romario.loja_ceda_artes.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,6 +16,8 @@ public class LojaCedaArtesApplication implements CommandLineRunner {
 
     @Autowired
     private CategoriaRepository categoriaRepository;
+    @Autowired
+    private ProdutoRepository produtoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LojaCedaArtesApplication.class, args);
@@ -24,6 +28,11 @@ public class LojaCedaArtesApplication implements CommandLineRunner {
         Categoria cat1 = new Categoria(null, "Informática");
         Categoria cat2 = new Categoria(null, "Escritório");
 
+        Produto pro1 = new Produto(null, "Computador", 3500.70);
+        Produto pro2 = new Produto(null, "Impressoa", 750.00);
+        Produto pro3 = new Produto(null, "Mouse", 80.00);
+
         categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
+        produtoRepository.saveAll(Arrays.asList(pro1, pro2, pro3));
     }
 }
