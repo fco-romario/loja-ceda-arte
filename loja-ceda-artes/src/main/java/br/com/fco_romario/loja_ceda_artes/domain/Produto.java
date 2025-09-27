@@ -1,8 +1,11 @@
 package br.com.fco_romario.loja_ceda_artes.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -19,6 +22,15 @@ public class Produto implements Serializable {
 
     @Column(nullable = false)
     private Double preco;
+
+    @JsonBackReference
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "produtos_categorias",
+            joinColumns = @JoinColumn(name = "produto_fk"),
+            inverseJoinColumns = @JoinColumn(name = "categoria_fk")
+    )
+    private List<Categoria> categorias = new ArrayList<>();
 
     public Produto() {}
 
@@ -50,6 +62,14 @@ public class Produto implements Serializable {
 
     public void setPreco(Double preco) {
         this.preco = preco;
+    }
+
+    public List<Categoria> getCategorias() {
+        return categorias;
+    }
+
+    public void setCategorias(List<Categoria> categorias) {
+        this.categorias = categorias;
     }
 
     @Override

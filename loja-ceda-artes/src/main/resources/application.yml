@@ -10,5 +10,5 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update #mudar para none depois
+      ddl-auto: create #mudar para none depois
     show-sql: true
