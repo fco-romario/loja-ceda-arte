@@ -1,5 +1,7 @@
 package br.com.fco_romario.loja_ceda_artes.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -29,13 +31,19 @@ public class Endereco implements Serializable {
     @Column(length = 8, nullable = false)
     private String cep;
 
+    @JsonManagedReference
     @ManyToOne()
     @JoinColumn(name = "cidade_fk")
     private Cidade cidade;
 
+    @JsonBackReference
+    @ManyToOne()
+    @JoinColumn(name = "cliente_fk")
+    private Cliente cliente;
+
     public Endereco() {}
 
-    public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep, Cidade cidade) {
+    public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep, Cidade cidade, Cliente cliente) {
         this.id = id;
         this.logradouro = logradouro;
         this.numero = numero;
@@ -43,6 +51,7 @@ public class Endereco implements Serializable {
         this.bairro = bairro;
         this.cep = cep;
         this.cidade = cidade;
+        this.cliente = cliente;
     }
 
     public Integer getId() {
@@ -101,15 +110,23 @@ public class Endereco implements Serializable {
         this.cidade = cidade;
     }
 
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Endereco endereco = (Endereco) o;
-        return Objects.equals(getId(), endereco.getId()) && Objects.equals(getLogradouro(), endereco.getLogradouro()) && Objects.equals(getNumero(), endereco.getNumero()) && Objects.equals(getComplemento(), endereco.getComplemento()) && Objects.equals(getBairro(), endereco.getBairro()) && Objects.equals(getCep(), endereco.getCep()) && Objects.equals(getCidade(), endereco.getCidade());
+        return Objects.equals(getId(), endereco.getId()) && Objects.equals(getLogradouro(), endereco.getLogradouro()) && Objects.equals(getNumero(), endereco.getNumero()) && Objects.equals(getComplemento(), endereco.getComplemento()) && Objects.equals(getBairro(), endereco.getBairro()) && Objects.equals(getCep(), endereco.getCep()) && Objects.equals(getCidade(), endereco.getCidade()) && Objects.equals(getCliente(), endereco.getCliente());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getLogradouro(), getNumero(), getComplemento(), getBairro(), getCep(), getCidade());
+        return Objects.hash(getId(), getLogradouro(), getNumero(), getComplemento(), getBairro(), getCep(), getCidade(), getCliente());
     }
 }

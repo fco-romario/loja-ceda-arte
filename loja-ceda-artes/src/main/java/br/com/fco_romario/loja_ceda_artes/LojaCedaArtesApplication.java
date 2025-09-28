@@ -1,6 +1,7 @@
 package br.com.fco_romario.loja_ceda_artes;
 
 import br.com.fco_romario.loja_ceda_artes.domain.*;
+import br.com.fco_romario.loja_ceda_artes.enums.TipoCliente;
 import br.com.fco_romario.loja_ceda_artes.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -23,6 +24,8 @@ public class LojaCedaArtesApplication implements CommandLineRunner {
     private CidadeRepository cidadeRepository;
     @Autowired
     private EnderecoRepository enderecoRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LojaCedaArtesApplication.class, args);
@@ -60,10 +63,21 @@ public class LojaCedaArtesApplication implements CommandLineRunner {
         estadoRepository.saveAll(Arrays.asList(est1, est2));
         cidadeRepository.saveAll(Arrays.asList(ci1, ci2));
 
-        Endereco e1 = new Endereco(null, "Rua Oscar França", "1518", "Próximo à Padaria",  "Bom jardim", "12345678", ci2);
-        Endereco e2 = new Endereco(null, "Avenida Matos", "1300", "Próximo à Farmácia",  "Centro", "87456321", ci1);
-        Endereco e3 = new Endereco(null, "Osório de Paiva", "7700", "Próximo à Terminal Siqueira",  "Siqueira", "87456321", ci2);
+        Cliente cl1 = new Cliente(null, "Maria Alves", "test@gmail.com", "501.448.080-21", TipoCliente.PESSOA_FISICA.getCodigo());
+        Cliente cl2 = new Cliente(null, "Felipe de Sousa", "test2@gmail.com", "731.444.800-02", TipoCliente.PESSOA_JURIDICA.getCodigo());
 
+        cl1.getTelefones().addAll(Arrays.asList("85900000000", "85988888888"));
+        cl2.getTelefones().addAll(Arrays.asList("85900000000", "85988888888"));
+
+        Endereco e1 = new Endereco(null, "Rua Oscar França", "1518", "Próximo à Padaria",  "Bom jardim", "12345678", ci2, cl1);
+        Endereco e2 = new Endereco(null, "Avenida Matos", "1300", "Próximo à Farmácia",  "Centro", "87456321", ci1, cl2);
+        Endereco e3 = new Endereco(null, "Osório de Paiva", "7700", "Próximo à Terminal Siqueira",  "Siqueira", "87456321", ci2, cl2);
+
+        cl1.getEnderecos().addAll(Arrays.asList(e1));
+        cl1.getEnderecos().addAll(Arrays.asList(e2,e3));
+
+
+        clienteRepository.saveAll(Arrays.asList(cl1, cl2));
         enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
     }
 }
