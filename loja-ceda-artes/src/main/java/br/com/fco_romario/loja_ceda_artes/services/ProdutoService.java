@@ -12,10 +12,10 @@ import java.util.Optional;
 public class ProdutoService {
 
     @Autowired
-    private ProdutoRepository ProdutoRepository;
+    private ProdutoRepository produtoRepository;
 
     public Produto buscarPorId(Integer id) {
-        Optional<Produto> obj = ProdutoRepository.findById(id);
+        Optional<Produto> obj = produtoRepository.findById(id);
         return obj.orElseThrow(() -> new ResourceNotFoundException(
                 "Objecto não encontrado id: " + id + ", tipo: " + Produto.class.getSimpleName()));
     }
