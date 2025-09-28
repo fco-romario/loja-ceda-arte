@@ -1,13 +1,7 @@
 package br.com.fco_romario.loja_ceda_artes;
 
-import br.com.fco_romario.loja_ceda_artes.domain.Categoria;
-import br.com.fco_romario.loja_ceda_artes.domain.Cidade;
-import br.com.fco_romario.loja_ceda_artes.domain.Estado;
-import br.com.fco_romario.loja_ceda_artes.domain.Produto;
-import br.com.fco_romario.loja_ceda_artes.repositories.CategoriaRepository;
-import br.com.fco_romario.loja_ceda_artes.repositories.CidadeRepository;
-import br.com.fco_romario.loja_ceda_artes.repositories.EstadoRepository;
-import br.com.fco_romario.loja_ceda_artes.repositories.ProdutoRepository;
+import br.com.fco_romario.loja_ceda_artes.domain.*;
+import br.com.fco_romario.loja_ceda_artes.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -27,6 +21,8 @@ public class LojaCedaArtesApplication implements CommandLineRunner {
     private EstadoRepository estadoRepository;
     @Autowired
     private CidadeRepository cidadeRepository;
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LojaCedaArtesApplication.class, args);
@@ -52,17 +48,22 @@ public class LojaCedaArtesApplication implements CommandLineRunner {
         categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
         produtoRepository.saveAll(Arrays.asList(pro1, pro2, pro3));
 
-        Estado est1 = new Estado(null, "Minas Gerais");
-        Estado est2 = new Estado(null, "São Paulo");
+        Estado est1 = new Estado(null, "São Paulo");
+        Estado est2 = new Estado(null, "Ceará");
 
-        Cidade ci1 = new Cidade(null, "Uberlândia", est1);
-        Cidade ci2 = new Cidade(null, "São Paulo", est2);
-        Cidade ci3 = new Cidade(null, "Campinas", est2);
+        Cidade ci1 = new Cidade(null, "São Paulo", est1);
+        Cidade ci2 = new Cidade(null, "Fortaleza", est2);
 
         est1.getCidades().addAll(Arrays.asList(ci1));
-        est2.getCidades().addAll(Arrays.asList(ci2, ci3));
+        est2.getCidades().addAll(Arrays.asList(ci2));
 
         estadoRepository.saveAll(Arrays.asList(est1, est2));
-        cidadeRepository.saveAll(Arrays.asList(ci1, ci2, ci3));
+        cidadeRepository.saveAll(Arrays.asList(ci1, ci2));
+
+        Endereco e1 = new Endereco(null, "Rua Oscar França", "1518", "Próximo à Padaria",  "Bom jardim", "12345678", ci2);
+        Endereco e2 = new Endereco(null, "Avenida Matos", "1300", "Próximo à Farmácia",  "Centro", "87456321", ci1);
+        Endereco e3 = new Endereco(null, "Osório de Paiva", "7700", "Próximo à Terminal Siqueira",  "Siqueira", "87456321", ci2);
+
+        enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
     }
 }
