@@ -1,14 +1,19 @@
 package br.com.fco_romario.loja_ceda_artes;
 
 import br.com.fco_romario.loja_ceda_artes.domain.Categoria;
+import br.com.fco_romario.loja_ceda_artes.domain.Cidade;
+import br.com.fco_romario.loja_ceda_artes.domain.Estado;
 import br.com.fco_romario.loja_ceda_artes.domain.Produto;
 import br.com.fco_romario.loja_ceda_artes.repositories.CategoriaRepository;
+import br.com.fco_romario.loja_ceda_artes.repositories.CidadeRepository;
+import br.com.fco_romario.loja_ceda_artes.repositories.EstadoRepository;
 import br.com.fco_romario.loja_ceda_artes.repositories.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 @SpringBootApplication
@@ -18,6 +23,10 @@ public class LojaCedaArtesApplication implements CommandLineRunner {
     private CategoriaRepository categoriaRepository;
     @Autowired
     private ProdutoRepository produtoRepository;
+    @Autowired
+    private EstadoRepository estadoRepository;
+    @Autowired
+    private CidadeRepository cidadeRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LojaCedaArtesApplication.class, args);
@@ -42,5 +51,18 @@ public class LojaCedaArtesApplication implements CommandLineRunner {
 
         categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
         produtoRepository.saveAll(Arrays.asList(pro1, pro2, pro3));
+
+        Estado est1 = new Estado(null, "Minas Gerais");
+        Estado est2 = new Estado(null, "São Paulo");
+
+        Cidade ci1 = new Cidade(null, "Uberlândia", est1);
+        Cidade ci2 = new Cidade(null, "São Paulo", est2);
+        Cidade ci3 = new Cidade(null, "Campinas", est2);
+
+        est1.getCidades().addAll(Arrays.asList(ci1));
+        est2.getCidades().addAll(Arrays.asList(ci2, ci3));
+
+        estadoRepository.saveAll(Arrays.asList(est1, est2));
+        cidadeRepository.saveAll(Arrays.asList(ci1, ci2, ci3));
     }
 }

@@ -12,7 +12,7 @@ import java.util.Optional;
 public class CidadeService {
 
     @Autowired
-    private CidadeRepository produtoRepository;
+    private CidadeRepository cidadeRepository;
 
     public Cidade buscarPorId(Integer id) {
         Optional<Cidade> obj = cidadeRepository.findById(id);

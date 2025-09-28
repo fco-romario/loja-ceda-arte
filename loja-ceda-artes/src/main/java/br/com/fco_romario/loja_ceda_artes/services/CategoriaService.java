@@ -1,7 +1,6 @@
 package br.com.fco_romario.loja_ceda_artes.services;
 
 import br.com.fco_romario.loja_ceda_artes.domain.Categoria;
-import br.com.fco_romario.loja_ceda_artes.domain.Produto;
 import br.com.fco_romario.loja_ceda_artes.exception.ResourceNotFoundException;
 import br.com.fco_romario.loja_ceda_artes.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;

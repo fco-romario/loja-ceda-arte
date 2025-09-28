@@ -3,6 +3,8 @@ package br.com.fco_romario.loja_ceda_artes.domain;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -17,11 +19,16 @@ public class Cidade implements Serializable {
     @Column(nullable = false, length = 100, unique = true)
     private String nome;
 
+    @ManyToOne
+    @JoinColumn(name = "estado_fk")
+    private Estado estado;
+
     public Cidade() {}
 
-    public Cidade(Integer id, String nome) {
+    public Cidade(Integer id, String nome, Estado estado) {
         this.id = id;
         this.nome = nome;
+        this.estado = estado;
     }
 
     public Integer getId() {
@@ -40,15 +47,23 @@ public class Cidade implements Serializable {
         this.nome = nome;
     }
 
+    public Estado getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Estado estado) {
+        this.estado = estado;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Cidade cidade = (Cidade) o;
-        return Objects.equals(getId(), cidade.getId()) && Objects.equals(getNome(), cidade.getNome());
+        return Objects.equals(getId(), cidade.getId()) && Objects.equals(getNome(), cidade.getNome()) && Objects.equals(getEstado(), cidade.getEstado());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getNome());
+        return Objects.hash(getId(), getNome(), getEstado());
     }
 }

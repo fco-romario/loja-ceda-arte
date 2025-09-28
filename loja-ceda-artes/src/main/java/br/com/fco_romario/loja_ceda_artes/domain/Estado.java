@@ -3,6 +3,8 @@ package br.com.fco_romario.loja_ceda_artes.domain;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -16,6 +18,9 @@ public class Estado implements Serializable {
 
     @Column(nullable = false, length = 100, unique = true)
     private String nome;
+
+    @OneToMany(mappedBy = "estado")
+    private List<Cidade> cidades = new ArrayList<>();
 
     public Estado() {}
 
@@ -40,15 +45,23 @@ public class Estado implements Serializable {
         this.nome = nome;
     }
 
+    public List<Cidade> getCidades() {
+        return cidades;
+    }
+
+    public void setCidades(List<Cidade> cidades) {
+        this.cidades = cidades;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Estado estado = (Estado) o;
-        return Objects.equals(getId(), estado.getId()) && Objects.equals(getNome(), estado.getNome());
+        return Objects.equals(getId(), estado.getId()) && Objects.equals(getNome(), estado.getNome()) && Objects.equals(getCidades(), estado.getCidades());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getNome());
+        return Objects.hash(getId(), getNome(), getCidades());
     }
 }
