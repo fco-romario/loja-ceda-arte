@@ -76,7 +76,6 @@ public class LojaCedaArtesApplication implements CommandLineRunner {
         cl1.getEnderecos().addAll(Arrays.asList(e1));
         cl1.getEnderecos().addAll(Arrays.asList(e2,e3));
 
-
         clienteRepository.saveAll(Arrays.asList(cl1, cl2));
         enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
     }
