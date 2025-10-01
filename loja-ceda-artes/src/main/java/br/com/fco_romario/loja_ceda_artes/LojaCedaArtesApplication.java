@@ -1,6 +1,7 @@
 package br.com.fco_romario.loja_ceda_artes;
 
 import br.com.fco_romario.loja_ceda_artes.domain.*;
+import br.com.fco_romario.loja_ceda_artes.enums.EstadoPagamento;
 import br.com.fco_romario.loja_ceda_artes.enums.TipoCliente;
 import br.com.fco_romario.loja_ceda_artes.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 @SpringBootApplication
 public class LojaCedaArtesApplication implements CommandLineRunner {
@@ -26,6 +29,10 @@ public class LojaCedaArtesApplication implements CommandLineRunner {
     private EnderecoRepository enderecoRepository;
     @Autowired
     private ClienteRepository clienteRepository;
+    @Autowired
+    private PedidoRepository pedidoRepository;
+    @Autowired
+    private PagamentoRepository pagamentoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LojaCedaArtesApplication.class, args);
@@ -74,9 +81,28 @@ public class LojaCedaArtesApplication implements CommandLineRunner {
         Endereco e3 = new Endereco(null, "Osório de Paiva", "7700", "Próximo à Terminal Siqueira",  "Siqueira", "87456321", ci2, cl2);
 
         cl1.getEnderecos().addAll(Arrays.asList(e1));
-        cl1.getEnderecos().addAll(Arrays.asList(e2,e3));
+        cl2.getEnderecos().addAll(Arrays.asList(e2,e3));
 
         clienteRepository.saveAll(Arrays.asList(cl1, cl2));
         enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
+
+        SimpleDateFormat spd = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+
+        Pedido ped1 = new Pedido(null, spd.parse("30/09/2025 12:00"), cl1, e1);
+        Pedido ped2 = new Pedido(null, spd.parse("30/09/2025 12:00"), cl2, e2);
+
+
+        Pagamento pag1 = new PagamentoComCartao(null, EstadoPagamento.PEDENTE, ped1, 6);
+        ped1.setPagamento(pag1);
+        Pagamento pag2 = new PagamentoComBoleto(null, EstadoPagamento.QUITADO, ped2, spd.parse("05/10/2025 12:00"), spd.parse("05/10/2025 08:30"));
+        ped2.setPagamento(pag2);
+
+        cl1.getPedidos().addAll(Arrays.asList(ped1));
+        cl2.getPedidos().addAll(Arrays.asList(ped2));
+
+        pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+        pagamentoRepository.saveAll(Arrays.asList(pag1, pag2));
+
+
     }
 }
