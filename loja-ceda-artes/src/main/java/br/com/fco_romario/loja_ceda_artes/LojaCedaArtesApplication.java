@@ -33,6 +33,8 @@ public class LojaCedaArtesApplication implements CommandLineRunner {
     private PedidoRepository pedidoRepository;
     @Autowired
     private PagamentoRepository pagamentoRepository;
+    @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LojaCedaArtesApplication.class, args);
@@ -103,6 +105,15 @@ public class LojaCedaArtesApplication implements CommandLineRunner {
         pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
         pagamentoRepository.saveAll(Arrays.asList(pag1, pag2));
 
+        ItemPedido ip1 = new ItemPedido(ped1, pro1, 500.00, 1, 3500.00);
+        ItemPedido ip2 = new ItemPedido(ped2, pro2, 0D, 1, 800.00);
 
+        ped1.getItens().addAll(Arrays.asList(ip1));
+        ped2.getItens().addAll(Arrays.asList(ip2));
+
+        pro1.getItens().addAll(Arrays.asList(ip1));
+        pro2.getItens().addAll(Arrays.asList(ip2));
+
+        itemPedidoRepository.saveAll(Arrays.asList(ip1, ip2));
     }
 }

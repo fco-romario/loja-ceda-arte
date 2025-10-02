@@ -3,8 +3,7 @@ package br.com.fco_romario.loja_ceda_artes.domain;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 @Table(name = "pedidos")
@@ -27,6 +26,9 @@ public class Pedido implements Serializable {
     @JoinColumn(name = "endereco_entrega_fk")
     private Endereco enderecoDeEntrega;
 
+    @OneToMany(mappedBy = "id.pedido")
+    private Set<ItemPedido> itens = new HashSet<>();
+
     public Pedido() {}
 
     public Pedido(Integer id, Date instante, Pagamento pagamento, Cliente cliente, Endereco enderecoDeEntrega) {
@@ -42,6 +44,14 @@ public class Pedido implements Serializable {
         this.instante = instante;
         this.cliente = cliente;
         this.enderecoDeEntrega = enderecoDeEntrega;
+    }
+
+    public List<Produto> getProdutos() {
+        List<Produto> lista = new ArrayList<>();
+        for (ItemPedido x : itens) {
+            lista.add(x.getProduto());
+        }
+        return lista;
     }
 
     public Integer getId() {
@@ -84,15 +94,23 @@ public class Pedido implements Serializable {
         this.enderecoDeEntrega = enderecoDeEntrega;
     }
 
+    public Set<ItemPedido> getItens() {
+        return itens;
+    }
+
+    public void setItens(Set<ItemPedido> itens) {
+        this.itens = itens;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Pedido pedido = (Pedido) o;
-        return Objects.equals(getId(), pedido.getId()) && Objects.equals(getInstante(), pedido.getInstante()) && Objects.equals(getPagamento(), pedido.getPagamento()) && Objects.equals(getCliente(), pedido.getCliente()) && Objects.equals(getEnderecoDeEntrega(), pedido.getEnderecoDeEntrega());
+        return Objects.equals(getId(), pedido.getId()) && Objects.equals(getInstante(), pedido.getInstante()) && Objects.equals(getPagamento(), pedido.getPagamento()) && Objects.equals(getCliente(), pedido.getCliente()) && Objects.equals(getEnderecoDeEntrega(), pedido.getEnderecoDeEntrega()) && Objects.equals(getItens(), pedido.getItens());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getInstante(), getPagamento(), getCliente(), getEnderecoDeEntrega());
+        return Objects.hash(getId());
     }
 }
