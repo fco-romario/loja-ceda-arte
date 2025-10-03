@@ -1,5 +1,6 @@
 package br.com.fco_romario.loja_ceda_artes.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -19,6 +20,7 @@ public class Cidade implements Serializable {
     @Column(nullable = false, length = 100, unique = true)
     private String nome;
 
+    @JsonManagedReference
     @ManyToOne
     @JoinColumn(name = "estado_fk")
     private Estado estado;

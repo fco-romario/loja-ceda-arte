@@ -1,5 +1,6 @@
 package br.com.fco_romario.loja_ceda_artes.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -34,6 +35,7 @@ public class Cliente implements Serializable {
     @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER)
     private List<Endereco> enderecos = new ArrayList<>();
 
+    @JsonIgnore
     @OneToMany(mappedBy = "cliente")
     private List<Pedido> pedidos = new ArrayList<>();
 

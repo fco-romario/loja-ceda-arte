@@ -1,6 +1,7 @@
 package br.com.fco_romario.loja_ceda_artes.domain;
 
 import br.com.fco_romario.loja_ceda_artes.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -19,6 +20,7 @@ public abstract class Pagamento implements Serializable {
     @OneToOne
     @JoinColumn(name = "pedido_fk")
     @MapsId
+    @JsonIgnore
     private Pedido pedido;
 
     public Pagamento() {
@@ -46,6 +48,7 @@ public abstract class Pagamento implements Serializable {
         this.estado = estado.getCodigo();
     }
 
+    @JsonIgnore
     public Pedido getPedio() {
         return pedido;
     }
