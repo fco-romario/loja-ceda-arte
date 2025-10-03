@@ -1,5 +1,6 @@
 package br.com.fco_romario.loja_ceda_artes.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;

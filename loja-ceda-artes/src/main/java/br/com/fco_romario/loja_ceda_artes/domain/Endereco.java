@@ -31,7 +31,6 @@ public class Endereco implements Serializable {
     @Column(length = 8, nullable = false)
     private String cep;
 
-    @JsonManagedReference
     @ManyToOne()
     @JoinColumn(name = "cidade_fk")
     private Cidade cidade;

@@ -1,5 +1,6 @@
 package br.com.fco_romario.loja_ceda_artes.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -18,7 +19,7 @@ public class Pedido implements Serializable {
     @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
     private Pagamento pagamento;
 
-    @ManyToOne()
+    @ManyToOne
     @JoinColumn(name = "cliente_fk")
     private Cliente cliente;
 
@@ -44,14 +45,6 @@ public class Pedido implements Serializable {
         this.instante = instante;
         this.cliente = cliente;
         this.enderecoDeEntrega = enderecoDeEntrega;
-    }
-
-    public List<Produto> getProdutos() {
-        List<Produto> lista = new ArrayList<>();
-        for (ItemPedido x : itens) {
-            lista.add(x.getProduto());
-        }
-        return lista;
     }
 
     public Integer getId() {

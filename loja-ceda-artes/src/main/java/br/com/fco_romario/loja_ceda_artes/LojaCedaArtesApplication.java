@@ -46,7 +46,7 @@ public class LojaCedaArtesApplication implements CommandLineRunner {
         Categoria cat2 = new Categoria(null, "Escritório");
 
         Produto pro1 = new Produto(null, "Computador", 3500.70);
-        Produto pro2 = new Produto(null, "Impressoa", 750.00);
+        Produto pro2 = new Produto(null, "Impressora", 750.00);
         Produto pro3 = new Produto(null, "Mouse", 80.00);
 
         cat1.getProdutos().addAll(Arrays.asList(pro1, pro2, pro3));
