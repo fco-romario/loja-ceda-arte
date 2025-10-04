@@ -39,7 +39,7 @@ public class ItemPedido implements Serializable {
     public Pedido getPedido() {
         return this.id.getPedido();
     }
-    
+
     public Produto getProduto() {
         return this.id.getProduto();
     }
