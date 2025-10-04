@@ -1,5 +1,6 @@
 package br.com.fco_romario.loja_ceda_artes.domain;
 
+import br.com.fco_romario.loja_ceda_artes.enums.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -25,6 +26,7 @@ public class Cliente implements Serializable {
     @Column(length = 14, nullable = false)
     private String cpfOuCnpj;
 
+    @Column(nullable = false)
     private Integer tipo;
 
     @ElementCollection
@@ -32,7 +34,7 @@ public class Cliente implements Serializable {
     private Set<String> telefones = new HashSet<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Endereco> enderecos = new ArrayList<>();
 
     @JsonIgnore
@@ -41,12 +43,12 @@ public class Cliente implements Serializable {
 
     public Cliente() {}
 
-    public Cliente(Integer id, String nome, String email, String cpfOuCnpj, Integer tipo) {
+    public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.cpfOuCnpj = cpfOuCnpj;
-        this.tipo = tipo;
+        this.tipo = tipo.getCodigo();
     }
 
     public Integer getId() {
@@ -81,12 +83,12 @@ public class Cliente implements Serializable {
         this.cpfOuCnpj = cpfOuCnpj;
     }
 
-    public Integer getTipo() {
-        return tipo;
+    public TipoCliente getTipo() {
+        return TipoCliente.toEnum(tipo);
     }
 
-    public void setTipo(Integer tipo) {
-        this.tipo = tipo;
+    public void setTipo(TipoCliente tipo) {
+        this.tipo = tipo.getCodigo();
     }
 
     public Set<String> getTelefones() {

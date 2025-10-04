@@ -72,8 +72,8 @@ public class LojaCedaArtesApplication implements CommandLineRunner {
         estadoRepository.saveAll(Arrays.asList(est1, est2));
         cidadeRepository.saveAll(Arrays.asList(ci1, ci2));
 
-        Cliente cl1 = new Cliente(null, "Maria Alves", "test@gmail.com", "501.448.080-21", TipoCliente.PESSOA_FISICA.getCodigo());
-        Cliente cl2 = new Cliente(null, "Felipe de Sousa", "test2@gmail.com", "731.444.800-02", TipoCliente.PESSOA_JURIDICA.getCodigo());
+        Cliente cl1 = new Cliente(null, "Maria Alves", "test@gmail.com", "501.448.080-21", TipoCliente.PESSOA_FISICA);
+        Cliente cl2 = new Cliente(null, "Felipe de Sousa", "test2@gmail.com", "731.444.800-02", TipoCliente.PESSOA_JURIDICA);
 
         cl1.getTelefones().addAll(Arrays.asList("85900000000", "85988888888"));
         cl2.getTelefones().addAll(Arrays.asList("85900000000", "85988888888"));
