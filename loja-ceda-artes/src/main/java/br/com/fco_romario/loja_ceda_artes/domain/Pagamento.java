@@ -19,6 +19,7 @@ public abstract class Pagamento implements Serializable {
 
     @OneToOne
     @JoinColumn(name = "pedido_fk")
+
     @MapsId
     @JsonIgnore
     private Pedido pedido;

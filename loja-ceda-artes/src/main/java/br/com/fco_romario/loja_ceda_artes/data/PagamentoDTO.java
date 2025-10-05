@@ -14,8 +14,7 @@ public abstract class PagamentoDTO implements Serializable {
     private Integer estado;
     private PedidoDTO pedido;
 
-    public PagamentoDTO() {
-    }
+    public PagamentoDTO() {}
 
     public PagamentoDTO(Integer id, EstadoPagamento estado, PedidoDTO pedido) {
         this.id = id;

@@ -1,6 +1,6 @@
 package br.com.fco_romario.loja_ceda_artes.controllers;
 
-import br.com.fco_romario.loja_ceda_artes.domain.Cliente;
+import br.com.fco_romario.loja_ceda_artes.data.ClienteDTO;
 import br.com.fco_romario.loja_ceda_artes.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,28 +18,28 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Cliente>> buscarTodos() {
-        List<Cliente> list = clienteService.buscarTodos();
+    public ResponseEntity<List<ClienteDTO>> buscarTodos() {
+        List<ClienteDTO> list = clienteService.buscarTodos();
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Cliente> buscarPorId(@PathVariable Integer id) {
-        Cliente obj = clienteService.buscarPorId(id);
+    public ResponseEntity<ClienteDTO> buscarPorId(@PathVariable Integer id) {
+        ClienteDTO obj = clienteService.buscarPorId(id);
         return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Cliente> criar(@RequestBody Cliente cliente) {
+    public ResponseEntity<ClienteDTO> criar(@RequestBody ClienteDTO cliente) {
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.criar(cliente));
     }
 
     @PutMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Cliente> atualizar(@RequestBody Cliente cliente) {
+    public ResponseEntity<ClienteDTO> atualizar(@RequestBody ClienteDTO cliente) {
         return ResponseEntity.ok().body(clienteService.atualizar(cliente));
     }
 
