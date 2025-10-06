@@ -9,8 +9,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.lang.reflect.Array;
+import java.time.LocalDate;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -72,8 +73,10 @@ public class LojaCedaArtesApplication implements CommandLineRunner {
         estadoRepository.saveAll(Arrays.asList(est1, est2));
         cidadeRepository.saveAll(Arrays.asList(ci1, ci2));
 
-        Cliente cl1 = new Cliente(null, "Maria Alves", "test@gmail.com", "501.448.080-21", TipoCliente.PESSOA_FISICA);
-        Cliente cl2 = new Cliente(null, "Felipe de Sousa", "test2@gmail.com", "731.444.800-02", TipoCliente.PESSOA_JURIDICA);
+        LocalDate nascimento = LocalDate.of(1995, 7, 12);
+
+        Cliente cl1 = new Cliente(null, "Maria Alves", nascimento, "test@gmail.com", "501.448.080-21", TipoCliente.PESSOA_FISICA);
+        Cliente cl2 = new Cliente(null, "Felipe de Sousa", nascimento, "test2@gmail.com", "731.444.800-02", TipoCliente.PESSOA_JURIDICA);
 
         cl1.getTelefones().addAll(Arrays.asList("85900000000", "85988888888"));
         cl2.getTelefones().addAll(Arrays.asList("85900000000", "85988888888"));

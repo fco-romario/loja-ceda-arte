@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.*;
 
 @Entity
@@ -19,6 +20,9 @@ public class Cliente implements Serializable {
 
     @Column(length = 200, nullable = false)
     private String nome;
+
+    @Column(name = "data_nascimento", nullable = false)
+    private LocalDate dataNascimento;
 
     @Column(length = 200, nullable = false)
     private String email;
@@ -43,9 +47,10 @@ public class Cliente implements Serializable {
 
     public Cliente() {}
 
-    public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
+    public Cliente(Integer id, String nome, LocalDate dataNascimento, String email, String cpfOuCnpj, TipoCliente tipo) {
         this.id = id;
         this.nome = nome;
+        this.dataNascimento = dataNascimento;
         this.email = email;
         this.cpfOuCnpj = cpfOuCnpj;
         this.tipo = tipo.getCodigo();
@@ -65,6 +70,14 @@ public class Cliente implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public LocalDate  getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(LocalDate  dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
     public String getEmail() {
@@ -119,11 +132,11 @@ public class Cliente implements Serializable {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Cliente cliente = (Cliente) o;
-        return Objects.equals(getId(), cliente.getId()) && Objects.equals(getNome(), cliente.getNome()) && Objects.equals(getEmail(), cliente.getEmail()) && Objects.equals(getCpfOuCnpj(), cliente.getCpfOuCnpj()) && Objects.equals(getTipo(), cliente.getTipo()) && Objects.equals(getTelefones(), cliente.getTelefones()) && Objects.equals(getEnderecos(), cliente.getEnderecos()) && Objects.equals(getPedidos(), cliente.getPedidos());
+        return Objects.equals(getId(), cliente.getId()) && Objects.equals(getNome(), cliente.getNome()) && Objects.equals(getDataNascimento(), cliente.getDataNascimento()) && Objects.equals(getEmail(), cliente.getEmail()) && Objects.equals(getCpfOuCnpj(), cliente.getCpfOuCnpj()) && Objects.equals(getTipo(), cliente.getTipo()) && Objects.equals(getTelefones(), cliente.getTelefones()) && Objects.equals(getEnderecos(), cliente.getEnderecos()) && Objects.equals(getPedidos(), cliente.getPedidos());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getNome(), getEmail(), getCpfOuCnpj(), getTipo(), getTelefones(), getEnderecos(), getPedidos());
+        return Objects.hash(getId(), getNome(), getDataNascimento(), getEmail(), getCpfOuCnpj(), getTipo(), getTelefones(), getEnderecos(), getPedidos());
     }
 }
