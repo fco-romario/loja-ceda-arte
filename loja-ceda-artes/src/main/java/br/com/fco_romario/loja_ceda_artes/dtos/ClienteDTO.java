@@ -1,9 +1,8 @@
-package br.com.fco_romario.loja_ceda_artes.data;
+package br.com.fco_romario.loja_ceda_artes.dtos;
 
 import br.com.fco_romario.loja_ceda_artes.enums.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.*;

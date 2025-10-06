@@ -1,17 +1,18 @@
-package br.com.fco_romario.loja_ceda_artes.data;
+package br.com.fco_romario.loja_ceda_artes.dtos;
 
 import br.com.fco_romario.loja_ceda_artes.enums.EstadoPagamento;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class PagamentoDTO implements Serializable {
+public class PagamentoDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer id;
     private Integer estado;
+
+    @JsonIgnore
     private PedidoDTO pedido;
 
     public PagamentoDTO() {}

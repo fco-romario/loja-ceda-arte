@@ -10,7 +10,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "pagamentos")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Pagamento implements Serializable {
+public class Pagamento implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id

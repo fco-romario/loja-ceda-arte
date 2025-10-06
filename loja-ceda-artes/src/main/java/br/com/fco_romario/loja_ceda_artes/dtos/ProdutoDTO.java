@@ -1,7 +1,6 @@
-package br.com.fco_romario.loja_ceda_artes.data;
+package br.com.fco_romario.loja_ceda_artes.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.*;
@@ -12,7 +11,12 @@ public class ProdutoDTO implements Serializable {
     private Integer id;
     private String nome;
     private Double preco;
+
+    //@JsonBackReference
+    @JsonIgnore
     private List<CategoriaDTO> categorias = new ArrayList<>();
+
+    @JsonIgnore
     private Set<ItemPedidoDTO> itens = new HashSet<>();
 
     public ProdutoDTO() {}

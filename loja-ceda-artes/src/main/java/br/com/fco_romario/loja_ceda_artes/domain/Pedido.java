@@ -16,7 +16,7 @@ public class Pedido implements Serializable {
     private Integer id;
     private Date instante;
 
-    @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private Pagamento pagamento;
 
     @ManyToOne
@@ -27,7 +27,7 @@ public class Pedido implements Serializable {
     @JoinColumn(name = "endereco_entrega_fk")
     private Endereco enderecoDeEntrega;
 
-    @OneToMany(mappedBy = "id.pedido")
+    @OneToMany(mappedBy = "id.pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ItemPedido> itens = new HashSet<>();
 
     public Pedido() {}

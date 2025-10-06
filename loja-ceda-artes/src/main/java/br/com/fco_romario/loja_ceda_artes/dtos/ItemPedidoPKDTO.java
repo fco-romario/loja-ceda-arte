@@ -1,4 +1,4 @@
-package br.com.fco_romario.loja_ceda_artes.data;
+package br.com.fco_romario.loja_ceda_artes.dtos;
 
 import java.io.Serializable;
 import java.util.Objects;

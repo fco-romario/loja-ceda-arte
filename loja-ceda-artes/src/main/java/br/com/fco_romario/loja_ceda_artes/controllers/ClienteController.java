@@ -1,6 +1,6 @@
 package br.com.fco_romario.loja_ceda_artes.controllers;
 
-import br.com.fco_romario.loja_ceda_artes.data.ClienteDTO;
+import br.com.fco_romario.loja_ceda_artes.dtos.ClienteDTO;
 import br.com.fco_romario.loja_ceda_artes.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,15 +32,15 @@ public class ClienteController {
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ClienteDTO> criar(@RequestBody ClienteDTO cliente) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.criar(cliente));
+    public ResponseEntity<ClienteDTO> criar(@RequestBody ClienteDTO clienteDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.criar(clienteDTO));
     }
 
     @PutMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ClienteDTO> atualizar(@RequestBody ClienteDTO cliente) {
-        return ResponseEntity.ok().body(clienteService.atualizar(cliente));
+    public ResponseEntity<ClienteDTO> atualizar(@RequestBody ClienteDTO clienteDTO) {
+        return ResponseEntity.ok().body(clienteService.atualizar(clienteDTO));
     }
 
     @DeleteMapping("/{id}")

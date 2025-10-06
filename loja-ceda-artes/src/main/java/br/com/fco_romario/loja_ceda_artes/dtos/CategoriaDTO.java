@@ -1,7 +1,4 @@
-package br.com.fco_romario.loja_ceda_artes.data;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
+package br.com.fco_romario.loja_ceda_artes.dtos;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,7 +11,7 @@ public class CategoriaDTO implements Serializable {
     private Integer id;
     private String nome;
 
-    @JsonManagedReference
+    //@JsonManagedReference
     private List<ProdutoDTO> produtos = new ArrayList<>();
 
     public CategoriaDTO() {}

@@ -1,12 +1,16 @@
 package br.com.fco_romario.loja_ceda_artes.services;
 
+import br.com.fco_romario.loja_ceda_artes.dtos.PedidoDTO;
+import br.com.fco_romario.loja_ceda_artes.domain.*;
 import br.com.fco_romario.loja_ceda_artes.domain.Pedido;
 import br.com.fco_romario.loja_ceda_artes.exception.ResourceNotFoundException;
 import br.com.fco_romario.loja_ceda_artes.repositories.PedidoRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PedidoService {
@@ -14,9 +18,42 @@ public class PedidoService {
     @Autowired
     private PedidoRepository cedidoRepository;
 
-    public Pedido buscarPorId(Integer id) {
-        Optional<Pedido> obj = cedidoRepository.findById(id);
-        return obj.orElseThrow(() -> new ResourceNotFoundException(
-                "Objecto não encontrado id: " + id + ", tipo: " + Pedido.class.getSimpleName()));
+    @Autowired
+    private ModelMapper modelMapper;
+
+    public PedidoDTO buscarPorId(Integer id) {
+        Pedido entity = cedidoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(
+                        "Objecto não encontrado id: " + id + ", tipo: " + PedidoDTO.class.getSimpleName()));
+
+        return modelMapper.map(entity, PedidoDTO.class);
+    }
+
+    public List<PedidoDTO> buscarTodos() {
+        return cedidoRepository.findAll()
+                .stream()
+                .map(pedido -> modelMapper.map(pedido, PedidoDTO.class))
+                .collect(Collectors.toList());
+    }
+
+    public PedidoDTO criar(PedidoDTO pedidoDTO) {
+        Pedido entity = modelMapper.map(pedidoDTO, Pedido.class);
+        return modelMapper.map(cedidoRepository.save(entity), PedidoDTO.class);
+    }
+
+    public PedidoDTO atualizar(PedidoDTO pedidoDTO) {
+        Pedido entity =  modelMapper.map(buscarPorId(pedidoDTO.getId()), Pedido.class);
+        entity.setInstante(pedidoDTO.getInstante());
+
+        //entity.setPagamento(modelMapper.map(pedidoDTO.getPagamento(), Pagamento.class));
+        //entity.setCliente(modelMapper.map(pedidoDTO.getCliente(), Cliente.class));
+        //entity.setEnderecoDeEntrega(modelMapper.map(pedidoDTO.getEnderecoDeEntrega(), Endereco.class));
+
+        return modelMapper.map(cedidoRepository.save(entity), PedidoDTO.class);
+    }
+
+    public void deletar(Integer id) {
+        Pedido entity =  modelMapper.map(buscarPorId(id), Pedido.class);
+        cedidoRepository.delete(entity);
     }
 }

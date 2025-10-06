@@ -1,6 +1,4 @@
-package br.com.fco_romario.loja_ceda_artes.data;
-
-import jakarta.persistence.*;
+package br.com.fco_romario.loja_ceda_artes.dtos;
 
 import java.io.Serializable;
 import java.util.Objects;

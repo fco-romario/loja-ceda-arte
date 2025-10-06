@@ -1,6 +1,6 @@
 package br.com.fco_romario.loja_ceda_artes.services;
 
-import br.com.fco_romario.loja_ceda_artes.data.ClienteDTO;
+import br.com.fco_romario.loja_ceda_artes.dtos.ClienteDTO;
 import br.com.fco_romario.loja_ceda_artes.domain.Cliente;
 import br.com.fco_romario.loja_ceda_artes.exception.ResourceNotFoundException;
 import br.com.fco_romario.loja_ceda_artes.repositories.ClienteRepository;
