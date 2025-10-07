@@ -25,6 +25,13 @@ public class ItemPedidoDTO implements Serializable {
         this.preco = preco;
     }
 
+    public ItemPedidoDTO(ProdutoDTO produto, Double desconto, Integer quantidade, Double preco) {
+        this.id.setProduto(produto);
+        this.desconto = desconto;
+        this.quantidade = quantidade;
+        this.preco = preco;
+    }
+
     @JsonIgnore
     public PedidoDTO getPedido() {
         return this.id.getPedido();
