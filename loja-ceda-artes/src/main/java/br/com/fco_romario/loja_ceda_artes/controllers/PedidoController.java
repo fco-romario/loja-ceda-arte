@@ -17,28 +17,48 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(
+        produces = {
+            MediaType.APPLICATION_JSON_VALUE,
+            MediaType.APPLICATION_XML_VALUE,
+            MediaType.APPLICATION_YAML_VALUE})
     public ResponseEntity<List<PedidoDTO>> buscarTodos() {
         List<PedidoDTO> list = pedidoService.buscarTodos();
         return ResponseEntity.ok().body(list);
     }
 
-    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}",
+        produces = {
+                MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.APPLICATION_YAML_VALUE})
     public ResponseEntity<PedidoDTO> buscarPorId(@PathVariable Integer id) {
         PedidoDTO obj = pedidoService.buscarPorId(id);
         return ResponseEntity.ok().body(obj);
     }
 
     @PostMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        consumes = {
+                MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.APPLICATION_YAML_VALUE},
+        produces = {
+                MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.APPLICATION_YAML_VALUE})
     public ResponseEntity<PedidoDTO> criar(@RequestBody PedidoDTO pedidoDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(pedidoService.criar(pedidoDTO));
     }
 
     @PutMapping(
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            produces = MediaType.APPLICATION_JSON_VALUE)
+        consumes = {
+                MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.APPLICATION_YAML_VALUE},
+        produces = {
+                MediaType.APPLICATION_JSON_VALUE,
+                MediaType.APPLICATION_XML_VALUE,
+                MediaType.APPLICATION_YAML_VALUE})
     public ResponseEntity<PedidoDTO> atualizar(@RequestBody PedidoDTO pedidoDTO) {
         return ResponseEntity.ok().body(pedidoService.atualizar(pedidoDTO));
     }
