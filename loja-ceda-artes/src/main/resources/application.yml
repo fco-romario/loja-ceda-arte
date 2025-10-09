@@ -13,6 +13,11 @@ spring:
       ddl-auto: create #mudar para none depois
     show-sql: true
 
+spring-doc:
+  paths-to-match: /api/**/v1/**
+  swagger-ui:
+    use-root-path: true
+
 #logging:
  # level:
   #  root: INFO
