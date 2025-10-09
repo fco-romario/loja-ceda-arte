@@ -1,4 +1,4 @@
-package br.com.fco_romario.loja_ceda_artes.controllers;
+package br.com.fco_romario.loja_ceda_artes.controllers.docs;
 
 import br.com.fco_romario.loja_ceda_artes.dtos.ClienteDTO;
 import br.com.fco_romario.loja_ceda_artes.dtos.EnderecoDTO;
@@ -17,19 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping(value = "api/v1/enderecos")
-@Tag(name = "Endereço", description = "Endpoint para gerenciar Endereços")
-public class EnderecoController {
+public interface EnderecoControllerDoc {
 
-    @Autowired
-    private EnderecoService enderecoService;
-
-    @GetMapping(
-        produces = {
-            MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE,
-            MediaType.APPLICATION_YAML_VALUE})
     @Operation(summary = "Buscar todos os Endereços paginado.",
             description = "Paginação para trazer Endereços por paginação - JSON, XML ou YAML.",
             tags = {"Endereços"},
@@ -55,16 +44,8 @@ public class EnderecoController {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    public ResponseEntity<List<EnderecoDTO>> buscarTodos() {
-        List<EnderecoDTO> list = enderecoService.buscarTodos();
-        return ResponseEntity.ok().body(list);
-    }
+    public ResponseEntity<List<EnderecoDTO>> buscarTodos();
 
-    @GetMapping(value = "/{id}",
-        produces = {
-            MediaType.APPLICATION_JSON_VALUE,
-            MediaType.APPLICATION_XML_VALUE,
-            MediaType.APPLICATION_YAML_VALUE})
     @Operation(summary = "Busca um Endereço.",
             description = "Busca um Endereço por seu ID - JSON, XML ou YAML.",
             tags = {"Endereços"},
@@ -90,20 +71,8 @@ public class EnderecoController {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    public ResponseEntity<EnderecoDTO> buscarPorId(@PathVariable Integer id) {
-        EnderecoDTO obj = enderecoService.buscarPorId(id);
-        return ResponseEntity.ok().body(obj);
-    }
+    public ResponseEntity<EnderecoDTO> buscarPorId(@PathVariable Integer id);
 
-    @PostMapping(
-        consumes = {
-                MediaType.APPLICATION_JSON_VALUE,
-                MediaType.APPLICATION_XML_VALUE,
-                MediaType.APPLICATION_YAML_VALUE},
-        produces = {
-                MediaType.APPLICATION_JSON_VALUE,
-                MediaType.APPLICATION_XML_VALUE,
-                MediaType.APPLICATION_YAML_VALUE})
     @Operation(summary = "Cria um Endereço.",
             description = "Cria um Endereço - JSON, XML ou YAML.",
             tags = {"Endereços"},
@@ -128,19 +97,8 @@ public class EnderecoController {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    public ResponseEntity<EnderecoDTO> criar(@RequestBody EnderecoDTO enderecoDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(enderecoService.criar(enderecoDTO));
-    }
+    public ResponseEntity<EnderecoDTO> criar(@RequestBody EnderecoDTO enderecoDTO);
 
-    @PutMapping(
-        consumes = {
-                MediaType.APPLICATION_JSON_VALUE,
-                MediaType.APPLICATION_XML_VALUE,
-                MediaType.APPLICATION_YAML_VALUE},
-        produces = {
-                MediaType.APPLICATION_JSON_VALUE,
-                MediaType.APPLICATION_XML_VALUE,
-                MediaType.APPLICATION_YAML_VALUE})
     @Operation(summary = "Atualiza um Endereço",
             description = "Atualiza um Endereço por seu ID - JSON, XML ou YAML.",
             tags = {"Endereços"},
@@ -167,11 +125,8 @@ public class EnderecoController {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    public ResponseEntity<EnderecoDTO> atualizar(@RequestBody EnderecoDTO enderecoDTO) {
-        return ResponseEntity.ok().body(enderecoService.atualizar(enderecoDTO));
-    }
+    public ResponseEntity<EnderecoDTO> atualizar(@RequestBody EnderecoDTO enderecoDTO);
 
-    @DeleteMapping("/{id}")
     @Operation(summary = "Deleta um Endereço",
             description = "Deleta um Endereço por seu ID - JSON, XML ou YAML.",
             tags = {"Endereços"},
@@ -185,9 +140,6 @@ public class EnderecoController {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    public ResponseEntity<Void> deletar(@PathVariable("id") Integer id) {
-        enderecoService.deletar(id);
-        return ResponseEntity.noContent().build();
-    }
+    public ResponseEntity<Void> deletar(@PathVariable("id") Integer id);
 }
 

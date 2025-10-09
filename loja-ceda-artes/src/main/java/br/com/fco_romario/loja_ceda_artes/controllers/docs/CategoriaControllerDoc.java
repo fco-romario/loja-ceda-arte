@@ -1,4 +1,4 @@
-package br.com.fco_romario.loja_ceda_artes.controllers;
+package br.com.fco_romario.loja_ceda_artes.controllers.docs;
 
 import br.com.fco_romario.loja_ceda_artes.dtos.CategoriaDTO;
 import br.com.fco_romario.loja_ceda_artes.dtos.ClienteDTO;
@@ -17,19 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping(value = "api/v1/categorias")
-@Tag(name = "Categorias", description = "Endpoint para gerenciar Categorias")
-public class CategoriaController {
+public interface CategoriaControllerDoc {
 
-    @Autowired
-    private CategoriaService categoriaService;
-
-    @GetMapping(
-            produces = {
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE,
-                    MediaType.APPLICATION_YAML_VALUE})
     @Operation(summary = "Buscar todas as Categorias paginado.",
             description = "Paginação para trazer Categorias por paginação - JSON, XML ou YAML.",
             tags = {"Categorias"},
@@ -55,16 +44,8 @@ public class CategoriaController {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    public ResponseEntity<List<CategoriaDTO>> buscarTodos() {
-        List<CategoriaDTO> list = categoriaService.buscarTodos();
-        return ResponseEntity.ok().body(list);
-    }
+    public ResponseEntity<List<CategoriaDTO>> buscarTodos();
 
-    @GetMapping(value = "/{id}",
-            produces = {
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE,
-                    MediaType.APPLICATION_YAML_VALUE})
     @Operation(summary = "Busca uma Categoria.",
             description = "Busca uma Categoria por seu ID - JSON, XML ou YAML.",
             tags = {"Categorias"},
@@ -90,20 +71,8 @@ public class CategoriaController {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    public ResponseEntity<CategoriaDTO> buscarPorId(@PathVariable Integer id) {
-        CategoriaDTO obj = categoriaService.buscarPorId(id);
-        return ResponseEntity.ok().body(obj);
-    }
+    public ResponseEntity<CategoriaDTO> buscarPorId(@PathVariable Integer id);
 
-    @PostMapping(
-            consumes = {
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE,
-                    MediaType.APPLICATION_YAML_VALUE},
-            produces = {
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE,
-                    MediaType.APPLICATION_YAML_VALUE})
     @Operation(summary = "Cria uma Categoria.",
             description = "Cria uma Categoria - JSON, XML ou YAML.",
             tags = {"Categorias"},
@@ -128,19 +97,8 @@ public class CategoriaController {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    public ResponseEntity<CategoriaDTO> criar(@RequestBody CategoriaDTO categoriaDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(categoriaService.criar(categoriaDTO));
-    }
+    public ResponseEntity<CategoriaDTO> criar(@RequestBody CategoriaDTO categoriaDTO);
 
-    @PutMapping(
-            consumes = {
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE,
-                    MediaType.APPLICATION_YAML_VALUE},
-            produces = {
-                    MediaType.APPLICATION_JSON_VALUE,
-                    MediaType.APPLICATION_XML_VALUE,
-                    MediaType.APPLICATION_YAML_VALUE})
     @Operation(summary = "Atualiza uma Categoria",
             description = "Atualiza uma Categoria por seu ID - JSON, XML ou YAML.",
             tags = {"Categorias"},
@@ -167,11 +125,8 @@ public class CategoriaController {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    public ResponseEntity<CategoriaDTO> atualizar(@RequestBody CategoriaDTO categoriaDTO) {
-        return ResponseEntity.ok().body(categoriaService.atualizar(categoriaDTO));
-    }
+    public ResponseEntity<CategoriaDTO> atualizar(@RequestBody CategoriaDTO categoriaDTO);
 
-    @DeleteMapping("/{id}")
     @Operation(summary = "Deleta uma Categoria",
             description = "Deleta um Categoria por seu ID - JSON, XML ou YAML.",
             tags = {"Categorias"},
@@ -185,8 +140,5 @@ public class CategoriaController {
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
             }
     )
-    public ResponseEntity<Void> deletar(@PathVariable("id") Integer id) {
-        categoriaService.deletar(id);
-        return ResponseEntity.noContent().build();
-    }
+    public ResponseEntity<Void> deletar(@PathVariable("id") Integer id);
 }
