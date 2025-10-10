@@ -2,6 +2,7 @@ package br.com.fco_romario.loja_ceda_artes.services;
 
 import br.com.fco_romario.loja_ceda_artes.dtos.ClienteDTO;
 import br.com.fco_romario.loja_ceda_artes.domain.Cliente;
+import br.com.fco_romario.loja_ceda_artes.exception.IllegalArgumentException;
 import br.com.fco_romario.loja_ceda_artes.exception.ResourceNotFoundException;
 import br.com.fco_romario.loja_ceda_artes.repositories.ClienteRepository;
 import org.modelmapper.ModelMapper;
@@ -36,6 +37,19 @@ public class ClienteService {
     }
 
     public ClienteDTO criar(ClienteDTO clienteDTO) {
+        if(clienteDTO.getId() != null )
+            throw new IllegalArgumentException("O ID do Cliente deve ser nulo na criação.");
+
+        if(clienteDTO.getEnderecos() == null || clienteDTO.getEnderecos().isEmpty())
+            throw new IllegalArgumentException("Ao criar um Cliente é necessário ao menos um endereço.");
+
+        boolean enderecoComId = clienteDTO.getEnderecos()
+                .stream()
+                .anyMatch(endereco -> endereco.getId() != null);
+
+        if(enderecoComId)
+            throw new IllegalArgumentException("Os endereços não devem conter ID na criação do Cliente.");
+
         Cliente entity = modelMapper.map(clienteDTO, Cliente.class);
         return modelMapper.map(clienteRepository.save(entity), ClienteDTO.class);
     }
