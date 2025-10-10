@@ -38,7 +38,7 @@ public class Cliente implements Serializable {
     private Set<String> telefones = new HashSet<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Endereco> enderecos = new ArrayList<>();
 
     @JsonIgnore

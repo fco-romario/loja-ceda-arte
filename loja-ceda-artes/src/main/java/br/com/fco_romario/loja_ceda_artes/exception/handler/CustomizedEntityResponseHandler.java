@@ -1,6 +1,7 @@
 package br.com.fco_romario.loja_ceda_artes.exception.handler;
 
 import br.com.fco_romario.loja_ceda_artes.exception.ExceptionResponse;
+import br.com.fco_romario.loja_ceda_artes.exception.IllegalArgumentException;
 import br.com.fco_romario.loja_ceda_artes.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,15 @@ public class CustomizedEntityResponseHandler extends ResponseEntityExceptionHand
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public final ResponseEntity<ExceptionResponse> handlerNotFoundException(Exception ex, WebRequest request) {
+        ExceptionResponse response = new ExceptionResponse(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public final ResponseEntity<ExceptionResponse> handlerIllegalArgumentException(Exception ex, WebRequest request) {
         ExceptionResponse response = new ExceptionResponse(
                 new Date(),
                 ex.getMessage(),

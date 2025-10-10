@@ -1,9 +1,13 @@
 package br.com.fco_romario.loja_ceda_artes.services;
 
+import br.com.fco_romario.loja_ceda_artes.domain.Cliente;
 import br.com.fco_romario.loja_ceda_artes.dtos.EnderecoDTO;
 import br.com.fco_romario.loja_ceda_artes.domain.Endereco;
+import br.com.fco_romario.loja_ceda_artes.exception.IllegalArgumentException;
 import br.com.fco_romario.loja_ceda_artes.exception.ResourceNotFoundException;
+import br.com.fco_romario.loja_ceda_artes.mapper.ClienteMapper;
 import br.com.fco_romario.loja_ceda_artes.mapper.EnderecoMapper;
+import br.com.fco_romario.loja_ceda_artes.repositories.ClienteRepository;
 import br.com.fco_romario.loja_ceda_artes.repositories.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +20,8 @@ public class EnderecoService {
 
     @Autowired
     private EnderecoRepository enderecoRepository;
+    @Autowired
+    private ClienteService clienteService;
 
 //    @Autowired
 //    private ModelMapper modelMapper;
@@ -37,7 +43,16 @@ public class EnderecoService {
     }
 
     public EnderecoDTO criar(EnderecoDTO enderecoDTO) {
+        if(enderecoDTO.getId() != null)
+            throw new IllegalArgumentException("O ID do Endereço deve ser nulo na criação");
+
+        if(enderecoDTO.getCliente() == null || enderecoDTO.getCliente().getId() == null)
+            throw new IllegalArgumentException("O Cliente é obrigaótrio.");
+
+        Cliente cliente = ClienteMapper.toEntity(clienteService.buscarPorId(enderecoDTO.getCliente().getId()));
         Endereco entity = EnderecoMapper.toEntity(enderecoDTO);
+        entity.setCliente(cliente);
+
         return EnderecoMapper.toDTO((enderecoRepository.save(entity)));
         //return modelMapper.map(enderecoRepository.save(entity), EnderecoDTO.class);
     }
