@@ -3,6 +3,7 @@ package br.com.fco_romario.loja_ceda_artes.services;
 import br.com.fco_romario.loja_ceda_artes.controllers.ClienteController;
 import br.com.fco_romario.loja_ceda_artes.dtos.ClienteDTO;
 import br.com.fco_romario.loja_ceda_artes.domain.Cliente;
+import br.com.fco_romario.loja_ceda_artes.dtos.EnderecoDTO;
 import br.com.fco_romario.loja_ceda_artes.exception.IllegalArgumentException;
 import br.com.fco_romario.loja_ceda_artes.exception.ResourceNotFoundException;
 import br.com.fco_romario.loja_ceda_artes.repositories.ClienteRepository;
@@ -79,6 +80,13 @@ public class ClienteService {
     public void deletar(Integer id) {
         Cliente entity =  modelMapper.map(buscarPorId(id), Cliente.class);
         clienteRepository.delete(entity);
+    }
+
+    public ClienteDTO buscarClientePorEnderecoId(Integer enderecoId) {
+        Cliente entity = clienteRepository.buscarClientePorEnderecoId(enderecoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum cliente para o endereço de id: " + enderecoId));
+
+        return modelMapper.map(entity, ClienteDTO.class);
     }
 
     private void adicionaLinksHateoas(ClienteDTO dto) {
