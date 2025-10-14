@@ -24,6 +24,7 @@ public class ClienteService {
     @Autowired
     private ModelMapper modelMapper;
 
+    //todo adicionar validacao com validators @NotNull e @Positive
     public ClienteDTO buscarPorId(Integer id) {
         Cliente entity = clienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(

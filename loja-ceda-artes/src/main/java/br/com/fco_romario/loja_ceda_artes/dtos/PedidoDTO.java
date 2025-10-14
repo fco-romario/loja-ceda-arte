@@ -1,12 +1,14 @@
 package br.com.fco_romario.loja_ceda_artes.dtos;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class PedidoDTO implements Serializable {
+public class PedidoDTO extends RepresentationModel<PedidoDTO> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer id;
