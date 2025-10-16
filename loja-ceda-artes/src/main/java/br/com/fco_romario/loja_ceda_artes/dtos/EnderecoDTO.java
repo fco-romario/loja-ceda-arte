@@ -1,11 +1,12 @@
 package br.com.fco_romario.loja_ceda_artes.dtos;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-public class EnderecoDTO implements Serializable {
+public class EnderecoDTO extends RepresentationModel<EnderecoDTO> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer id;

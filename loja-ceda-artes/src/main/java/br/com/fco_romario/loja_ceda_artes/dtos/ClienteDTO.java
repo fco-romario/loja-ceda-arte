@@ -1,17 +1,16 @@
 package br.com.fco_romario.loja_ceda_artes.dtos;
 
 import br.com.fco_romario.loja_ceda_artes.enums.TipoCliente;
-import br.com.fco_romario.loja_ceda_artes.serializer.TipoClienteSerializer;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
-public class ClienteDTO implements Serializable {
+public class ClienteDTO extends RepresentationModel<ClienteDTO>  implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer id;

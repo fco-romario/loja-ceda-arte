@@ -39,12 +39,13 @@ public class ItemPedidoService {
         ItemPedido entity = modelMapper.map(itemPedidoDTO, ItemPedido.class);
         return modelMapper.map(itemPedidoRepository.save(entity), ItemPedidoDTO.class);
     }
-
+    //todo: refactorar
     public ItemPedidoDTO atualizar(ItemPedidoDTO itemPedidoDTO) {
-        ItemPedido entity =  modelMapper.map(buscarPorPedidoIdEProdutoId(
-                itemPedidoDTO.getId().getPedido().getId(),
-                itemPedidoDTO.getId().getProduto().getId()),
-            ItemPedido.class);
+        ItemPedido entity = null;
+//        ItemPedido entity =  modelMapper.map(buscarPorPedidoIdEProdutoId(
+//                itemPedidoDTO.getId().getPedido().getId(),
+//                itemPedidoDTO.getId().getProduto().getId()),
+//            ItemPedido.class);
 
         entity.setDesconto(itemPedidoDTO.getDesconto());
         entity.setQuantidade(itemPedidoDTO.getQuantidade());

@@ -1,15 +1,19 @@
 package br.com.fco_romario.loja_ceda_artes.services;
 
+import br.com.fco_romario.loja_ceda_artes.controllers.ClienteController;
 import br.com.fco_romario.loja_ceda_artes.dtos.ClienteDTO;
 import br.com.fco_romario.loja_ceda_artes.domain.Cliente;
+import br.com.fco_romario.loja_ceda_artes.dtos.EnderecoDTO;
+import br.com.fco_romario.loja_ceda_artes.exception.IllegalArgumentException;
 import br.com.fco_romario.loja_ceda_artes.exception.ResourceNotFoundException;
 import br.com.fco_romario.loja_ceda_artes.repositories.ClienteRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class ClienteService {
@@ -20,24 +24,45 @@ public class ClienteService {
     @Autowired
     private ModelMapper modelMapper;
 
+    //todo adicionar validacao com validators @NotNull e @Positive
     public ClienteDTO buscarPorId(Integer id) {
         Cliente entity = clienteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Objecto não encontrado id: " + id + ", tipo: " + ClienteDTO.class.getSimpleName()));
 
-        return modelMapper.map(entity, ClienteDTO.class);
+        ClienteDTO dto = modelMapper.map(entity, ClienteDTO.class);
+        adicionaLinksHateoas(dto);
+        return dto;
     }
 
     public List<ClienteDTO> buscarTodos() {
         return clienteRepository.findAll()
                 .stream()
-                .map(cliente -> modelMapper.map(cliente, ClienteDTO.class))
-                .collect(Collectors.toList());
+                .map(cliente -> {
+                    ClienteDTO dto = modelMapper.map(cliente, ClienteDTO.class);
+                    adicionaLinksHateoas(dto);
+                    return  dto;
+                }).toList();
     }
 
     public ClienteDTO criar(ClienteDTO clienteDTO) {
-        Cliente entity = modelMapper.map(clienteDTO, Cliente.class);
-        return modelMapper.map(clienteRepository.save(entity), ClienteDTO.class);
+        if(clienteDTO.getId() != null )
+            throw new IllegalArgumentException("O ID do Cliente deve ser nulo na criação.");
+
+        if(clienteDTO.getEnderecos() == null || clienteDTO.getEnderecos().isEmpty())
+            throw new IllegalArgumentException("Ao criar um Cliente é necessário ao menos um endereço.");
+
+        boolean enderecoComId = clienteDTO.getEnderecos()
+                .stream()
+                .anyMatch(endereco -> endereco.getId() != null);
+
+        if(enderecoComId)
+            throw new IllegalArgumentException("Os endereços não devem conter ID na criação do Cliente.");
+
+        Cliente entity = clienteRepository.save(modelMapper.map(clienteDTO, Cliente.class));
+        ClienteDTO dto = modelMapper.map(entity, ClienteDTO.class);
+        adicionaLinksHateoas(dto);
+        return dto;
     }
 
     public ClienteDTO atualizar(ClienteDTO clienteDTO) {
@@ -48,11 +73,28 @@ public class ClienteService {
         entity.setCpfOuCnpj(clienteDTO.getCpfOuCnpj());
         entity.setTipo(clienteDTO.getTipo());
 
-        return modelMapper.map(clienteRepository.save(entity), ClienteDTO.class);
+        ClienteDTO dto = modelMapper.map(clienteRepository.save(entity), ClienteDTO.class);
+        adicionaLinksHateoas(dto);
+        return dto;
     }
 
     public void deletar(Integer id) {
         Cliente entity =  modelMapper.map(buscarPorId(id), Cliente.class);
         clienteRepository.delete(entity);
+    }
+
+    public ClienteDTO buscarClientePorEnderecoId(Integer enderecoId) {
+        Cliente entity = clienteRepository.buscarClientePorEnderecoId(enderecoId)
+                .orElseThrow(() -> new ResourceNotFoundException("Não foi encontrado nenhum cliente para o endereço de id: " + enderecoId));
+
+        return modelMapper.map(entity, ClienteDTO.class);
+    }
+
+    private void adicionaLinksHateoas(ClienteDTO dto) {
+        dto.add(linkTo(methodOn(ClienteController.class).buscarPorId(dto.getId())).withSelfRel().withType("GET"));
+        dto.add(linkTo(methodOn(ClienteController.class).buscarTodos()).withRel("buscarTodos").withType("GET"));
+        dto.add(linkTo(methodOn(ClienteController.class).criar(dto)).withRel("criar").withType("POST"));
+        dto.add(linkTo(methodOn(ClienteController.class).atualizar(dto)).withRel("atualizar").withType("PUT"));
+        dto.add(linkTo(methodOn(ClienteController.class).deletar(dto.getId())).withRel("deletar").withType("DELETE"));
     }
 }
