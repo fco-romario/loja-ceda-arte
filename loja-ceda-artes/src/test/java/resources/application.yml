@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: Loja Ceda Artes
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ceda_arte?useTimezone=true&serverTimezone=UTC
+    username: root
+    password: admin123
+
+  jpa:
+    hibernate:
+      ddl-auto: create #mudar para none depois
+    show-sql: true
+
+spring-doc:
+  paths-to-match: /api/**/v1/**
+  swagger-ui:
+    use-root-path: true
+
+#logging:
+ # level:
+  #  root: INFO
+    #br.com.fco_romario.loja_ceda_artes: DEBUG
