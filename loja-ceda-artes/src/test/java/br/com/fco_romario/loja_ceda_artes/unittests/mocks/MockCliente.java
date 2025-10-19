@@ -1,4 +1,4 @@
-package unittests.mocks;
+package br.com.fco_romario.loja_ceda_artes.unittests.mocks;
 
 import br.com.fco_romario.loja_ceda_artes.domain.Cliente;
 import br.com.fco_romario.loja_ceda_artes.dtos.ClienteDTO;

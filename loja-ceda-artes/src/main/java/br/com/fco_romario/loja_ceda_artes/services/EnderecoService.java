@@ -1,6 +1,5 @@
 package br.com.fco_romario.loja_ceda_artes.services;
 
-import br.com.fco_romario.loja_ceda_artes.controllers.ClienteController;
 import br.com.fco_romario.loja_ceda_artes.controllers.EnderecoController;
 import br.com.fco_romario.loja_ceda_artes.domain.Cliente;
 import br.com.fco_romario.loja_ceda_artes.dtos.EnderecoDTO;
@@ -9,14 +8,11 @@ import br.com.fco_romario.loja_ceda_artes.exception.IllegalArgumentException;
 import br.com.fco_romario.loja_ceda_artes.exception.ResourceNotFoundException;
 import br.com.fco_romario.loja_ceda_artes.mapper.ClienteMapper;
 import br.com.fco_romario.loja_ceda_artes.mapper.EnderecoMapper;
-import br.com.fco_romario.loja_ceda_artes.repositories.ClienteRepository;
 import br.com.fco_romario.loja_ceda_artes.repositories.EnderecoRepository;
-import ch.qos.logback.core.net.server.Client;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;

@@ -1,4 +1,4 @@
-package unittests.mapper;
+package br.com.fco_romario.loja_ceda_artes.unittests.mapper;
 
 import br.com.fco_romario.loja_ceda_artes.domain.Cliente;
 import br.com.fco_romario.loja_ceda_artes.dtos.ClienteDTO;
@@ -6,7 +6,7 @@ import br.com.fco_romario.loja_ceda_artes.enums.TipoCliente;
 import br.com.fco_romario.loja_ceda_artes.mapper.ClienteMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import unittests.mocks.MockCliente;
+import br.com.fco_romario.loja_ceda_artes.unittests.mocks.MockCliente;
 
 import java.time.LocalDate;
 import java.util.List;
