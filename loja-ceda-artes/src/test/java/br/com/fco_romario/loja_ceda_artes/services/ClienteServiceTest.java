@@ -5,6 +5,7 @@ import br.com.fco_romario.loja_ceda_artes.domain.Endereco;
 import br.com.fco_romario.loja_ceda_artes.dtos.ClienteDTO;
 import br.com.fco_romario.loja_ceda_artes.dtos.EnderecoDTO;
 import br.com.fco_romario.loja_ceda_artes.enums.TipoCliente;
+import br.com.fco_romario.loja_ceda_artes.exception.IllegalArgumentException;
 import br.com.fco_romario.loja_ceda_artes.repositories.ClienteRepository;
 import br.com.fco_romario.loja_ceda_artes.unittests.mocks.MockCliente;
 import br.com.fco_romario.loja_ceda_artes.unittests.mocks.MockEndereco;
@@ -142,6 +143,49 @@ class ClienteServiceTest {
         assertEquals("Próximo à Padaria2", result.getEnderecos().getLast().getComplemento());
         assertEquals("Bom jardim2", result.getEnderecos().getLast().getBairro());
         assertEquals("12345672", result.getEnderecos().getLast().getCep());
+    }
+
+    @Test
+    void testCriandoPessoaComId() {
+        ClienteDTO clienteDTO = inputCliente.mockDTO(1);
+
+        Exception exception =  assertThrows(IllegalArgumentException.class, () -> {
+            service.criar(clienteDTO);
+        });
+
+        String mensagemEsperada = "O ID do Cliente deve ser nulo na criação.";
+        String mensagemRecebida = exception.getMessage();
+        assertEquals(mensagemEsperada,mensagemRecebida);
+    }
+
+    @Test
+    void testCriandoPessoaSemEndereco() {
+        ClienteDTO clienteDTO = inputCliente.mockDTO(1);
+        clienteDTO.setId(null);
+
+        Exception exception =  assertThrows(IllegalArgumentException.class, () -> {
+            service.criar(clienteDTO);
+        });
+
+        String mensagemEsperada = "Ao criar um Cliente é necessário ao menos um endereço.";
+        String mensagemRecebida = exception.getMessage();
+        assertEquals(mensagemEsperada,mensagemRecebida);
+    }
+
+    @Test
+    void testCriandoPessoaComIdEndereco() {
+        ClienteDTO clienteDTO = inputCliente.mockDTO(1);
+        clienteDTO.setId(null);
+        EnderecoDTO enderecoDTO = inputEndereco.mockDTO(1);
+        clienteDTO.getEnderecos().add(enderecoDTO);
+
+        Exception exception =  assertThrows(IllegalArgumentException.class, () -> {
+            service.criar(clienteDTO);
+        });
+
+        String mensagemEsperada = "Os endereços não devem conter ID na criação do Cliente.";
+        String mensagemRecebida = exception.getMessage();
+        assertEquals(mensagemEsperada,mensagemRecebida);
     }
 
     @Test
