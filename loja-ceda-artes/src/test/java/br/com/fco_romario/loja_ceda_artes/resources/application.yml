@@ -1,3 +1,5 @@
+cors:
+  originPatterns: http://localhost:8081,http://outra.origem.exemplo.com
 spring:
   application:
     name: Loja Ceda Artes
