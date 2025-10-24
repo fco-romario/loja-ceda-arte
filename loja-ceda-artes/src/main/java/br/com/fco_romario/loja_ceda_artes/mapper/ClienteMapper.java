@@ -18,6 +18,7 @@ public class ClienteMapper {
                         .map(EnderecoMapper::toEntity)
                         .toList()
         );
+        entity.getEnderecos().forEach(t -> t.setCliente(entity));
         return entity;
     }
 
