@@ -122,6 +122,33 @@ public interface ClienteControllerDoc {
     )
     public ResponseEntity<ClienteDTO> atualizar(@RequestBody ClienteDTO clienteDTO);
 
+    @Operation(summary = "Busca um Cliente.",
+            description = "Busca um Cliente por ID do seu Endereço - JSON, XML ou YAML.",
+            tags = {"Clientes"},
+            responses = {
+                    @ApiResponse(
+                            description = "Succes",
+                            responseCode = "200",
+                            content = {
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                            schema = @Schema(implementation = ClienteDTO.class)),
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_XML_VALUE,
+                                            schema = @Schema(implementation = ClienteDTO.class)),
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_YAML_VALUE,
+                                            schema = @Schema(implementation = ClienteDTO.class)),
+                            }),
+                    @ApiResponse(description = "No Cotent", responseCode = "204", content = @Content),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
+            }
+    )
+    public ResponseEntity<ClienteDTO> buscarClientePorEnderecoId(@PathVariable("id") Integer enderecoId);
+
     @Operation(summary = "Deleta um Cliente",
             description = "Deleta um Cliente por seu ID - JSON, XML ou YAML.",
             tags = {"Clientes"},

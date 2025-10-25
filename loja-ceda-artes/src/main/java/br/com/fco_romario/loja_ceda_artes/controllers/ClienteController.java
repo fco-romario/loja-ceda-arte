@@ -71,6 +71,13 @@ public class ClienteController implements ClienteControllerDoc {
         return ResponseEntity.ok().body(clienteService.atualizar(clienteDTO));
     }
 
+    @GetMapping("/enderecos/{id}")
+    @Override
+    public ResponseEntity<ClienteDTO> buscarClientePorEnderecoId(@PathVariable("id") Integer enderecoId) {
+        ClienteDTO obj = clienteService.buscarClientePorEnderecoId(enderecoId);
+        return ResponseEntity.ok().body(obj);
+    }
+
     @DeleteMapping("/{id}")
     @Override
     public ResponseEntity<Void> deletar(@PathVariable("id") Integer id) {
