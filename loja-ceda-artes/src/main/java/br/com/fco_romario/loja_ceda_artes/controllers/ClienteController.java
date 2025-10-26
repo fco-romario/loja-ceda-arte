@@ -78,10 +78,18 @@ public class ClienteController implements ClienteControllerDoc {
         return ResponseEntity.ok().body(obj);
     }
 
+
     @DeleteMapping("/{id}")
     @Override
     public ResponseEntity<Void> deletar(@PathVariable("id") Integer id) {
         clienteService.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}")
+    @Override
+    public ResponseEntity<ClienteDTO> inativarCliente(@PathVariable("id")  Integer id) {
+        ClienteDTO obj = clienteService.inativarCliente(id);
+        return ResponseEntity.ok().body(obj);
     }
 }

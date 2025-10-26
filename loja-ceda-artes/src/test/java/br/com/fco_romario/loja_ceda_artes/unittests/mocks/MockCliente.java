@@ -44,7 +44,7 @@ public class MockCliente {
         cliente.setCpfOuCnpj(number % 2 == 0 ? "1111111111"+ number : "2222222222222"+ number);
         cliente.getTelefones().addAll(Arrays.asList("8590000000"+number, "8580000000"+number));
         cliente.setTipo(TipoCliente.toEnum(number % 2 == 0 ? 1 : 2));
-
+        cliente.setAtivo(true);
         return cliente;
     }
 
@@ -57,7 +57,7 @@ public class MockCliente {
         clienteDTO.setCpfOuCnpj(number % 2 == 0 ? "1111111111"+ number : "2222222222222"+ number);
         clienteDTO.getTelefones().addAll(Arrays.asList("8590000000"+number, "8580000000"+number));
         clienteDTO.setTipo(TipoCliente.toEnum(number % 2 == 0 ? 1 : 2));
-
+        clienteDTO.setAtivo(true);
         return clienteDTO;
     }
 }

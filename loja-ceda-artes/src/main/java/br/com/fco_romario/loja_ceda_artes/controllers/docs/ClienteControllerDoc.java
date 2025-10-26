@@ -163,4 +163,31 @@ public interface ClienteControllerDoc {
             }
     )
     public ResponseEntity<Void> deletar(@PathVariable("id") Integer id);
+
+    @Operation(summary = "Inativa um Cliente.",
+            description = "Inativa um Cliente por seu ID - JSON, XML ou YAML.",
+            tags = {"Clientes"},
+            responses = {
+                    @ApiResponse(
+                            description = "Succes",
+                            responseCode = "200",
+                            content = {
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                            schema = @Schema(implementation = ClienteDTO.class)),
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_XML_VALUE,
+                                            schema = @Schema(implementation = ClienteDTO.class)),
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_YAML_VALUE,
+                                            schema = @Schema(implementation = ClienteDTO.class)),
+                            }),
+                    @ApiResponse(description = "No Cotent", responseCode = "204", content = @Content),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
+                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
+            }
+    )
+    public ResponseEntity<ClienteDTO> inativarCliente(@PathVariable("id")  Integer id);
 }

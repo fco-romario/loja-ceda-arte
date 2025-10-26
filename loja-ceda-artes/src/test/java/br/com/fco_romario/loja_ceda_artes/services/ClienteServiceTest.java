@@ -280,7 +280,6 @@ class ClienteServiceTest {
 
         when(repository.buscarClientePorEnderecoId(1)).thenReturn(Optional.of(entityCliente));
 
-
         var result = service.buscarClientePorEnderecoId(1);
 
         assertNotNull(result);
@@ -317,6 +316,24 @@ class ClienteServiceTest {
         assertEquals("Próximo à Padaria2", result.getEnderecos().getLast().getComplemento());
         assertEquals("Bom jardim2", result.getEnderecos().getLast().getBairro());
         assertEquals("12345672", result.getEnderecos().getLast().getCep());
+    }
+
+    @Test
+    void inativarCliente() {
+        Cliente entityAtiva = inputCliente.mockEntity(1);
+        Cliente entityInativa = inputCliente.mockEntity(1);
+        entityInativa.setAtivo(false);
+
+        when(repository.findById(1))
+                .thenReturn(Optional.of(entityAtiva))
+                .thenReturn(Optional.of(entityInativa));
+
+        ClienteDTO entidadeInativa = service.inativarCliente(1);
+
+        assertFalse(entidadeInativa.getAtivo());
+        verify(repository, times(2)).findById(1);
+        verify(repository, times(1)).inativarCliente(1);
+        verifyNoMoreInteractions(repository);
     }
 
     private void assertLinkExists(Links links, String rel, String hrefEndsWith, String type) {

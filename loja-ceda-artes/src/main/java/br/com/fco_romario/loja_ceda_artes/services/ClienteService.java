@@ -10,10 +10,13 @@ import br.com.fco_romario.loja_ceda_artes.repositories.ClienteRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ClienteService {
@@ -77,7 +80,6 @@ public class ClienteService {
         adicionaLinksHateoas(dto);
         return dto;
     }
-
     public void deletar(Integer id) {
         Cliente entity =  ClienteMapper.toEntity(buscarPorId(id));
         clienteRepository.delete(entity);
@@ -92,11 +94,29 @@ public class ClienteService {
         return dto;
     }
 
+    @Transactional
+    public ClienteDTO inativarCliente(Integer id) {
+        ClienteDTO dto = buscarPorId(id);
+
+        if(!Objects.equals(dto.getId(), id))
+            throw new IllegalArgumentException("Erro ao tentar encontrar cliente para inativar ID: " + id);
+
+        clienteRepository.inativarCliente(id);
+
+        var entity = clienteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Após inativar, não foi possível resgatar o Cleinte de ID: " + id));
+
+        dto = ClienteMapper.toDTO(entity);
+        adicionaLinksHateoas(dto);
+        return dto;
+    }
+
     private void adicionaLinksHateoas(ClienteDTO dto) {
         dto.add(linkTo(methodOn(ClienteController.class).buscarPorId(dto.getId())).withSelfRel().withType("GET"));
         dto.add(linkTo(methodOn(ClienteController.class).buscarTodos()).withRel("buscarTodos").withType("GET"));
         dto.add(linkTo(methodOn(ClienteController.class).criar(dto)).withRel("criar").withType("POST"));
         dto.add(linkTo(methodOn(ClienteController.class).atualizar(dto)).withRel("atualizar").withType("PUT"));
+        dto.add(linkTo(methodOn(ClienteController.class).inativarCliente(dto.getId())).withRel("inativar").withType("PATCH"));
         dto.add(linkTo(methodOn(ClienteController.class).deletar(dto.getId())).withRel("deletar").withType("DELETE"));
     }
 }
