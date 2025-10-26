@@ -9,6 +9,8 @@ import br.com.fco_romario.loja_ceda_artes.mapper.ClienteMapper;
 import br.com.fco_romario.loja_ceda_artes.repositories.ClienteRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,14 +40,15 @@ public class ClienteService {
         return dto;
     }
 
-    public List<ClienteDTO> buscarTodos() {
-        return clienteRepository.findAll()
-                .stream()
+    public Page<ClienteDTO> buscarTodos(Pageable paginado) {
+        Page<Cliente> clientesPaginado = clienteRepository.findAll(paginado);
+
+        return clientesPaginado
                 .map(cliente -> {
                     ClienteDTO dto = ClienteMapper.toDTO(cliente);
                     adicionaLinksHateoas(dto);
-                    return  dto;
-                }).toList();
+                    return dto;
+                });
     }
 
     public ClienteDTO criar(ClienteDTO clienteDTO) {
@@ -113,7 +116,7 @@ public class ClienteService {
 
     private void adicionaLinksHateoas(ClienteDTO dto) {
         dto.add(linkTo(methodOn(ClienteController.class).buscarPorId(dto.getId())).withSelfRel().withType("GET"));
-        dto.add(linkTo(methodOn(ClienteController.class).buscarTodos()).withRel("buscarTodos").withType("GET"));
+        dto.add(linkTo(methodOn(ClienteController.class).buscarTodos(0, 12, "asc")).withRel("buscarTodos").withType("GET"));
         dto.add(linkTo(methodOn(ClienteController.class).criar(dto)).withRel("criar").withType("POST"));
         dto.add(linkTo(methodOn(ClienteController.class).atualizar(dto)).withRel("atualizar").withType("PUT"));
         dto.add(linkTo(methodOn(ClienteController.class).inativarCliente(dto.getId())).withRel("inativar").withType("PATCH"));
