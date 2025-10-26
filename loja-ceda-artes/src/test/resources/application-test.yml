@@ -7,9 +7,11 @@ spring:
     name: Loja Ceda Artes
 
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class -name: com.mysql.cj.jdbc.Driver
+    #url: jdbc:mysql://host.docker.internal:3306/ceda_arte?useTimezone=true&serverTimezone=UTC
     url: jdbc:mysql://localhost:3306/ceda_arte?useTimezone=true&serverTimezone=UTC
     username: root
+    password: admin123
   jpa:
     hibernate:
       ddl-auto: create #mudar para none depois

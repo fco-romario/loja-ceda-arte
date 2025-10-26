@@ -33,7 +33,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 public class ClienteControllerTest extends AbstractIntegrationTest {
 
     private static RequestSpecification specification;

@@ -4,6 +4,7 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.lifecycle.Startables;
@@ -12,10 +13,12 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 @ContextConfiguration(initializers = AbstractIntegrationTest.Initializer.class)
+@ActiveProfiles("test")
 public class AbstractIntegrationTest  {
 
     static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
-        static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:9.1.0"); //imagem do docker hub
+        static MySQLContainer<?> mysql = new MySQLContainer<>("mysql:9.1.0") //imagem do docker hub
+                .withDatabaseName("ceda_arte");//Cria um banco de dados (esquema) com o nome ceda_arte dentro do contêiner
 
         private static void startContainers() {
             Startables.deepStart(Stream.of(mysql)).join();

@@ -12,11 +12,11 @@ import java.util.Optional;
 public interface ClienteRepository extends JpaRepository<Cliente, Integer> {
 
     @Query(value = """
-                SELECT
-                    cliente.*
-                FROM Clientes cliente
-                JOIN enderecos endereco ON cliente.id = endereco.cliente_fk
-                where endereco.id = :enderecoId;
-            """, nativeQuery = true)
+            SELECT
+                cliente.*
+            FROM ceda_arte.clientes cliente
+            JOIN ceda_arte.enderecos endereco ON cliente.id = endereco.cliente_fk
+            where endereco.id = :enderecoId;
+        """, nativeQuery = true)
     Optional<Cliente> buscarClientePorEnderecoId(@Param("enderecoId") Integer enderecoId);
 }
