@@ -1,5 +1,6 @@
 package br.com.fco_romario.loja_ceda_artes.exception.handler;
 
+import br.com.fco_romario.loja_ceda_artes.exception.BadRequestException;
 import br.com.fco_romario.loja_ceda_artes.exception.ExceptionResponse;
 import br.com.fco_romario.loja_ceda_artes.exception.IllegalArgumentException;
 import br.com.fco_romario.loja_ceda_artes.exception.ResourceNotFoundException;
@@ -37,5 +38,13 @@ public class CustomizedEntityResponseHandler extends ResponseEntityExceptionHand
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    public final ResponseEntity<ExceptionResponse> handlerBadRequestException(Exception ex, WebRequest request) {
+        ExceptionResponse response = new ExceptionResponse(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false));
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
 }
