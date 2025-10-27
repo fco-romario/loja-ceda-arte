@@ -107,7 +107,7 @@ public class ClienteControllerTest extends AbstractIntegrationTest {
 
         assertNotNull(clienteCriado.getLinks());
         assertLinkExists(clienteCriado.getLinks(), "self", "api/v1/clientes/"+clienteCriado.getId().toString(), "GET");
-        assertLinkExists(clienteCriado.getLinks(), "buscarTodos", "api/v1/clientes", "GET");
+        assertLinkExists(clienteCriado.getLinks(), "buscarTodos", "api/v1/clientes?page=0&size=12&direction=asc", "GET");
         assertLinkExists(clienteCriado.getLinks(), "criar", "api/v1/clientes", "POST");
         assertLinkExists(clienteCriado.getLinks(), "atualizar", "api/v1/clientes", "PUT");
         assertLinkExists(clienteCriado.getLinks(), "deletar", "api/v1/clientes/"+clienteCriado.getId().toString(), "DELETE");
@@ -146,7 +146,7 @@ public class ClienteControllerTest extends AbstractIntegrationTest {
 
         assertNotNull(clienteParaAtualizado.getLinks());
         assertLinkExists(clienteParaAtualizado.getLinks(), "self", "api/v1/clientes/"+clienteParaAtualizado.getId().toString(), "GET");
-        assertLinkExists(clienteParaAtualizado.getLinks(), "buscarTodos", "api/v1/clientes", "GET");
+        assertLinkExists(clienteParaAtualizado.getLinks(), "buscarTodos", "api/v1/clientes?page=0&size=12&direction=asc", "GET");
         assertLinkExists(clienteParaAtualizado.getLinks(), "criar", "api/v1/clientes", "POST");
         assertLinkExists(clienteParaAtualizado.getLinks(), "atualizar", "api/v1/clientes", "PUT");
         assertLinkExists(clienteParaAtualizado.getLinks(), "deletar", "api/v1/clientes/"+clienteParaAtualizado.getId().toString(), "DELETE");
@@ -184,7 +184,7 @@ public class ClienteControllerTest extends AbstractIntegrationTest {
 
         assertNotNull(clienteRetornado.getLinks());
         assertLinkExists(clienteRetornado.getLinks(), "self", "api/v1/clientes/"+clienteRetornado.getId().toString(), "GET");
-        assertLinkExists(clienteRetornado.getLinks(), "buscarTodos", "api/v1/clientes", "GET");
+        assertLinkExists(clienteRetornado.getLinks(), "buscarTodos", "api/v1/clientes?page=0&size=12&direction=asc", "GET");
         assertLinkExists(clienteRetornado.getLinks(), "criar", "api/v1/clientes", "POST");
         assertLinkExists(clienteRetornado.getLinks(), "atualizar", "api/v1/clientes", "PUT");
         assertLinkExists(clienteRetornado.getLinks(), "deletar", "api/v1/clientes/"+clienteRetornado.getId().toString(), "DELETE");

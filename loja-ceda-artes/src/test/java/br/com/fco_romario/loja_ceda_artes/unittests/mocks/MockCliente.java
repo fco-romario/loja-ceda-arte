@@ -21,7 +21,7 @@ public class MockCliente {
 
     public List<Cliente> mockEntityList(){
         List<Cliente> clientes = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 15; i++) {
             clientes.add(mockEntity(i));
         }
         return clientes;
@@ -29,7 +29,7 @@ public class MockCliente {
 
     public List<ClienteDTO> mockDTOList(){
         List<ClienteDTO> clientes = new ArrayList();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 15; i++) {
             clientes.add(mockDTO(i));
         }
         return clientes;

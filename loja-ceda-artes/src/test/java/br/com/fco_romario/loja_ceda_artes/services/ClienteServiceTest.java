@@ -19,12 +19,21 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Links;
+import org.springframework.hateoas.PagedModel;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -46,6 +55,9 @@ class ClienteServiceTest {
     @Mock
     ClienteRepository repository;
 
+    @Mock
+    PagedResourcesAssembler<ClienteDTO> assembler;
+
     @BeforeEach
     void setUp() {
         inputCliente = new MockCliente();
@@ -65,7 +77,7 @@ class ClienteServiceTest {
         assertNotNull(result.getId());
         assertNotNull(result.getLinks());
         assertLinkExists(result.getLinks(), "self", "api/v1/clientes/1", "GET");
-        assertLinkExists(result.getLinks(), "buscarTodos", "api/v1/clientes", "GET");
+        assertLinkExists(result.getLinks(), "buscarTodos", "api/v1/clientes?page=0&size=12&direction=asc", "GET");
         assertLinkExists(result.getLinks(), "criar", "api/v1/clientes", "POST");
         assertLinkExists(result.getLinks(), "atualizar", "api/v1/clientes", "PUT");
         assertLinkExists(result.getLinks(), "deletar", "api/v1/clientes/1", "DELETE");
@@ -83,6 +95,38 @@ class ClienteServiceTest {
     @Test
     @Disabled("MOTIVO: Aguardando refatoração para Paginação")
     void buscarTodos() {
+        List<Cliente> mockEntityList = inputCliente.mockEntityList();
+        Page<Cliente> mockPage = new PageImpl<>(mockEntityList);
+
+        when(repository.findAll(any(Pageable.class))).thenReturn(mockPage);
+
+        List<ClienteDTO> mockDTOList = inputCliente.mockDTOList();
+
+        List<EntityModel<ClienteDTO>> entityModels = mockDTOList
+                .stream()
+                .map(EntityModel::of)
+                .toList();
+
+        PagedModel.PageMetadata pageMetadata = new PagedModel.PageMetadata(
+                mockPage.getSize(),
+                mockPage.getNumber(),
+                mockPage.getTotalElements(),
+                mockPage.getTotalPages()
+        );
+
+        PagedModel<EntityModel<ClienteDTO>> mockPagedModel = PagedModel.of(entityModels, pageMetadata);
+
+        when(assembler.toModel(any(Page.class), any(Link.class))).thenReturn(mockPagedModel);
+
+        PagedModel<EntityModel<ClienteDTO>> result = service.buscarTodos(PageRequest.of(0, 12));
+
+        List<ClienteDTO> clientes = result.getContent()
+                .stream()
+                .map(EntityModel::getContent)
+                .toList();
+
+        assertNotNull(clientes);
+        assertEquals(12, clientes.size());
 
     }
 
@@ -110,7 +154,7 @@ class ClienteServiceTest {
         assertNotNull(result.getId());
         assertNotNull(result.getLinks());
         assertLinkExists(result.getLinks(), "self", "api/v1/clientes/1", "GET");
-        assertLinkExists(result.getLinks(), "buscarTodos", "api/v1/clientes", "GET");
+        assertLinkExists(result.getLinks(), "buscarTodos", "api/v1/clientes?page=0&size=12&direction=asc", "GET");
         assertLinkExists(result.getLinks(), "criar", "api/v1/clientes", "POST");
         assertLinkExists(result.getLinks(), "atualizar", "api/v1/clientes", "PUT");
         assertLinkExists(result.getLinks(), "deletar", "api/v1/clientes/1", "DELETE");
@@ -225,7 +269,7 @@ class ClienteServiceTest {
         assertNotNull(result.getId());
         assertNotNull(result.getLinks());
         assertLinkExists(result.getLinks(), "self", "api/v1/clientes/1", "GET");
-        assertLinkExists(result.getLinks(), "buscarTodos", "api/v1/clientes", "GET");
+        assertLinkExists(result.getLinks(), "buscarTodos", "api/v1/clientes?page=0&size=12&direction=asc", "GET");
         assertLinkExists(result.getLinks(), "criar", "api/v1/clientes", "POST");
         assertLinkExists(result.getLinks(), "atualizar", "api/v1/clientes", "PUT");
         assertLinkExists(result.getLinks(), "deletar", "api/v1/clientes/1", "DELETE");
@@ -297,7 +341,7 @@ class ClienteServiceTest {
 
         assertNotNull(result.getLinks());
         assertLinkExists(result.getLinks(), "self", "api/v1/clientes/1", "GET");
-        assertLinkExists(result.getLinks(), "buscarTodos", "api/v1/clientes", "GET");
+        assertLinkExists(result.getLinks(), "buscarTodos", "api/v1/clientes?page=0&size=12&direction=asc", "GET");
         assertLinkExists(result.getLinks(), "criar", "api/v1/clientes", "POST");
         assertLinkExists(result.getLinks(), "atualizar", "api/v1/clientes", "PUT");
         assertLinkExists(result.getLinks(), "deletar", "api/v1/clientes/1", "DELETE");
