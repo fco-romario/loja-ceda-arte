@@ -1,6 +1,7 @@
 package br.com.fco_romario.loja_ceda_artes.integrations.controllers.withJson;
 
 import br.com.fco_romario.loja_ceda_artes.config.TestConfigs;
+import br.com.fco_romario.loja_ceda_artes.dto.wrapper.json.WrapperClienteDTO;
 import br.com.fco_romario.loja_ceda_artes.dtos.ClienteDTO;
 import br.com.fco_romario.loja_ceda_artes.dtos.EnderecoDTO;
 import br.com.fco_romario.loja_ceda_artes.enums.TipoCliente;
@@ -8,6 +9,7 @@ import br.com.fco_romario.loja_ceda_artes.integrations.testcontainers.AbstractIn
 import br.com.fco_romario.loja_ceda_artes.unittests.mocks.MockCliente;
 import br.com.fco_romario.loja_ceda_artes.unittests.mocks.MockEndereco;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -49,6 +51,7 @@ public class ClienteControllerTest extends AbstractIntegrationTest {
         objectMapper.registerModule(new Jackson2HalModule());
         objectMapper.findAndRegisterModules();
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 
         clienteDTO = new ClienteDTO();
         enderecoDTO = new EnderecoDTO();
@@ -72,6 +75,78 @@ public class ClienteControllerTest extends AbstractIntegrationTest {
                 .addFilter(new RequestLoggingFilter(LogDetail.ALL))
                 .addFilter(new ResponseLoggingFilter(LogDetail.ALL))
                 .build();
+    }
+
+    @Test
+    @Order(1)
+    void buscarTodosTest() throws JsonProcessingException {
+        var content = given(specification)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .queryParam("page", 0, "size", 3, "direction", "asc")//todo: so tinha 3 itens persistido por isso o size foi 3. ideal seria 12
+                .when()
+                .get()
+                .then()
+                .statusCode(200)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .extract()
+                .body()
+                .asString();
+
+        WrapperClienteDTO wrapper = objectMapper.readValue(content, WrapperClienteDTO.class);
+        var clientes = wrapper.getEmbedded().getClientes();
+
+        assertEquals(3, clientes.size());
+
+        ClienteDTO clienteTres = clientes.get(0);
+        assertNotNull(clienteTres.getId());
+        assertEquals("Felipe de Sousa", clienteTres.getNome());
+        assertEquals(LocalDate.of(1995, 7, 12), clienteTres.getDataNascimento());
+        assertEquals("test2@gmail.com", clienteTres.getEmail());
+        assertEquals("73144480002", clienteTres.getCpfOuCnpj());
+        assertEquals("85900000000", clienteTres.getTelefones().stream().toList().get(0));
+        assertEquals("85988888888", clienteTres.getTelefones().stream().toList().get(1));
+        assertEquals(TipoCliente.PESSOA_JURIDICA, clienteTres.getTipo());
+
+        assertNotNull(clienteTres.getLinks());
+        assertLinkExists(clienteTres.getLinks(), "self", "api/v1/clientes/"+clienteTres.getId().toString(), "GET");
+        assertLinkExists(clienteTres.getLinks(), "buscarTodos", "api/v1/clientes?page=0&size=12&direction=asc", "GET");
+        assertLinkExists(clienteTres.getLinks(), "criar", "api/v1/clientes", "POST");
+        assertLinkExists(clienteTres.getLinks(), "atualizar", "api/v1/clientes", "PUT");
+        assertLinkExists(clienteTres.getLinks(), "deletar", "api/v1/clientes/"+clienteTres.getId().toString(), "DELETE");
+
+        ClienteDTO clienteUm = clientes.get(1);
+        assertNotNull(clienteUm.getId());
+        assertEquals("Fulano Alves de Lima 1", clienteUm.getNome());
+        assertEquals(LocalDate.of(1996, 7, 12), clienteUm.getDataNascimento());
+        assertEquals("test1@gmail.com", clienteUm.getEmail());
+        assertEquals("22222222222221", clienteUm.getCpfOuCnpj());
+        assertEquals("85900000001", clienteUm.getTelefones().stream().toList().get(0));
+        assertEquals("85800000001", clienteUm.getTelefones().stream().toList().get(1));
+        assertEquals(TipoCliente.PESSOA_JURIDICA, clienteUm.getTipo());
+
+        assertNotNull(clienteUm.getLinks());
+        assertLinkExists(clienteUm.getLinks(), "self", "api/v1/clientes/"+clienteUm.getId().toString(), "GET");
+        assertLinkExists(clienteUm.getLinks(), "buscarTodos", "api/v1/clientes?page=0&size=12&direction=asc", "GET");
+        assertLinkExists(clienteUm.getLinks(), "criar", "api/v1/clientes", "POST");
+        assertLinkExists(clienteUm.getLinks(), "atualizar", "api/v1/clientes", "PUT");
+        assertLinkExists(clienteUm.getLinks(), "deletar", "api/v1/clientes/"+clienteUm.getId().toString(), "DELETE");
+
+        ClienteDTO clienteDois = clientes.get(2);
+        assertNotNull(clienteDois.getId());
+        assertEquals("Maria Alves", clienteDois.getNome());
+        assertEquals(LocalDate.of(1995, 7, 12), clienteDois.getDataNascimento());
+        assertEquals("test@gmail.com", clienteDois.getEmail());
+        assertEquals("50144808021", clienteDois.getCpfOuCnpj());
+        assertEquals("85900000000", clienteDois.getTelefones().stream().toList().get(0));
+        assertEquals("85988888888", clienteDois.getTelefones().stream().toList().get(1));
+        assertEquals(TipoCliente.PESSOA_FISICA, clienteDois.getTipo());
+
+        assertNotNull(clienteDois.getLinks());
+        assertLinkExists(clienteDois.getLinks(), "self", "api/v1/clientes/"+clienteDois.getId().toString(), "GET");
+        assertLinkExists(clienteDois.getLinks(), "buscarTodos", "api/v1/clientes?page=0&size=12&direction=asc", "GET");
+        assertLinkExists(clienteDois.getLinks(), "criar", "api/v1/clientes", "POST");
+        assertLinkExists(clienteDois.getLinks(), "atualizar", "api/v1/clientes", "PUT");
+        assertLinkExists(clienteDois.getLinks(), "deletar", "api/v1/clientes/"+clienteDois.getId().toString(), "DELETE");
     }
 
     @Test
