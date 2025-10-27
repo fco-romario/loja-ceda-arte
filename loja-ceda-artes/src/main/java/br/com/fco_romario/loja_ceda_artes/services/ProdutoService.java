@@ -27,43 +27,43 @@ public class ProdutoService {
     @Autowired
     private FileImporterFactory importerFactory;
 
-    @Autowired
-    private ModelMapper modelMapper;
+//    @Autowired
+//    private ModelMapper modelMapper;
 
     public ProdutoDTO buscarPorId(Integer id) {
         Produto entity = produtoRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Objecto não encontrado id: " + id + ", tipo: " + ProdutoDTO.class.getSimpleName()));
 
-        return modelMapper.map(entity, ProdutoDTO.class);
+        return ProdutoMapper.toDTO(entity);
     }
 
     public List<ProdutoDTO> buscarTodos() {
         return produtoRepository.findAll()
                 .stream()
-                .map(produto -> modelMapper.map(produto, ProdutoDTO.class))
-                .collect(Collectors.toList());
+                .map(ProdutoMapper::toDTO)
+                .toList();
     }
 
     public ProdutoDTO criar(ProdutoDTO produtoDTO) {
-        Produto entity = modelMapper.map(produtoDTO, Produto.class);
-        return modelMapper.map(produtoRepository.save(entity), ProdutoDTO.class);
+        Produto entity = ProdutoMapper.toEntity(produtoDTO);
+        return ProdutoMapper.toDTO(produtoRepository.save(entity));
     }
 
     public ProdutoDTO atualizar(ProdutoDTO produtoDTO) {
-        Produto entity =  modelMapper.map(buscarPorId(produtoDTO.getId()), Produto.class);
+        Produto entity =  ProdutoMapper.toEntity(buscarPorId(produtoDTO.getId()));
 
         entity.setNome(produtoDTO.getNome());
         entity.setPreco(produtoDTO.getPreco());
-        entity.getCategorias().addAll(
-                Arrays.asList(modelMapper.map(produtoDTO.getCategorias(), Categoria.class))
-        );
+//        entity.getCategorias().addAll(
+//                Arrays.asList(modelMapper.map(produtoDTO.getCategorias(), Categoria.class))
+//        );
 
-        return modelMapper.map(produtoRepository.save(entity), ProdutoDTO.class);
+        return ProdutoMapper.toDTO(produtoRepository.save(entity));
     }
 
     public void deletar(Integer id) {
-        Produto entity =  modelMapper.map(buscarPorId(id), Produto.class);
+        Produto entity =  ProdutoMapper.toEntity(buscarPorId(id));
         produtoRepository.delete(entity);
     }
 
@@ -93,6 +93,5 @@ public class ProdutoService {
         } catch (Exception e) {
             throw new FileStorageException("Erro ao processar o arquivo!");
         }
-
     }
 }
