@@ -39,6 +39,7 @@ public class XlsxImporter implements FileImporter {
                 produtos.add(parseRowToProdutoDTO(row));
             }
         }
+        return produtos;
     }
 
     private ProdutoDTO parseRowToProdutoDTO(Row row) {
