@@ -11,6 +11,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +34,9 @@ public class ClienteService {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    PagedResourcesAssembler<ClienteDTO> assembler;
+
     //todo adicionar validacao com validators @NotNull e @Positive
     public ClienteDTO buscarPorId(Integer id) {
         Cliente entity = clienteRepository.findById(id)
@@ -40,15 +48,23 @@ public class ClienteService {
         return dto;
     }
 
-    public Page<ClienteDTO> buscarTodos(Pageable paginado) {
+    public PagedModel<EntityModel<ClienteDTO>> buscarTodos(Pageable paginado) {
         Page<Cliente> clientesPaginado = clienteRepository.findAll(paginado);
 
-        return clientesPaginado
+        var clientesComLinks = clientesPaginado
                 .map(cliente -> {
                     ClienteDTO dto = ClienteMapper.toDTO(cliente);
                     adicionaLinksHateoas(dto);
                     return dto;
                 });
+
+        Link findAllLinks = WebMvcLinkBuilder.linkTo(
+            WebMvcLinkBuilder.methodOn(ClienteController.class).buscarTodos(
+                    paginado.getPageNumber(),
+                    paginado.getPageSize(),
+                    String.valueOf(paginado.getSort()))
+            ).withSelfRel();
+        return assembler.toModel(clientesComLinks, findAllLinks);
     }
 
     public ClienteDTO criar(ClienteDTO clienteDTO) {

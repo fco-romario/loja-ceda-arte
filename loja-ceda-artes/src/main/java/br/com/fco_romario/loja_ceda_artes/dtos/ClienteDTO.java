@@ -5,11 +5,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
+@Relation(collectionRelation = "clientes")
 public class ClienteDTO extends RepresentationModel<ClienteDTO>  implements Serializable {
     private static final long serialVersionUID = 1L;
 
