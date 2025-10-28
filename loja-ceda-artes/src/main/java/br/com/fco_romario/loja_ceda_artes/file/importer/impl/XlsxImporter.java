@@ -45,7 +45,7 @@ public class XlsxImporter implements FileImporter {
     private ProdutoDTO parseRowToProdutoDTO(Row row) {
         ProdutoDTO produto = new ProdutoDTO();
         produto.setNome(row.getCell(0).getStringCellValue());
-        produto.setPreco(Double.parseDouble(row.getCell(1).getStringCellValue()));
+        produto.setPreco(row.getCell(1).getNumericCellValue());
 
         return produto;
     }

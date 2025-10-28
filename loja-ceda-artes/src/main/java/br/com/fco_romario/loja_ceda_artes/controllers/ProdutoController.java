@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -75,6 +76,12 @@ public class ProdutoController implements ProdutoControllerDoc {
     public ResponseEntity<Void> deletar(@PathVariable("id") Integer id) {
         produtoService.deletar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/massivo")
+    @Override
+    public ResponseEntity<List<ProdutoDTO>> criacaoMassiva(MultipartFile file) {
+        return ResponseEntity.ok().body(produtoService.criacaoMassiva(file));
     }
 }
 

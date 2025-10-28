@@ -19,9 +19,9 @@ public class FileImporterFactory {
     private ApplicationContext context;
 
     public FileImporter getImporter(String fileName) {
-        if(fileName.equals(".xlsx")) {
+        if(fileName.endsWith(".xlsx")) {
             return context.getBean(XlsxImporter.class);
-        } else if(fileName.equals(".csv")) {
+        } else if(fileName.endsWith(".csv")) {
             return context.getBean(CsvImporter.class);
         } else {
             throw new BadRequestException("Invalid file format!");

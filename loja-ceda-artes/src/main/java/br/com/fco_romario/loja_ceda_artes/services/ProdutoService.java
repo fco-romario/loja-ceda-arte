@@ -67,7 +67,7 @@ public class ProdutoService {
         produtoRepository.delete(entity);
     }
 
-    public List<ProdutoDTO> criacaoMassiva(MultipartFile file) throws Exception {
+    public List<ProdutoDTO> criacaoMassiva(MultipartFile file) {
         if(file.isEmpty())
             throw new BadRequestException("Impossível salvar Arquivo vasio. Envie um arquivo válido!");
 

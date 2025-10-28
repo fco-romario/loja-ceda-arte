@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -138,5 +139,31 @@ public interface ProdutoControllerDoc {
             }
     )
     public ResponseEntity<Void> deletar(@PathVariable("id") Integer id);
+
+    @Operation(summary = "Cria varios Produtos .",
+            description = "Cria varios Produtos a partir de XLSX e CSV - JSON, XML ou YAML.",
+            tags = {"Produtos"},
+            responses = {
+                    @ApiResponse(
+                            description = "Succes",
+                            responseCode = "200",
+                            content = {
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                            schema = @Schema(implementation = ClienteDTO.class)),
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_XML_VALUE,
+                                            schema = @Schema(implementation = ClienteDTO.class)),
+                                    @Content(
+                                            mediaType = MediaType.APPLICATION_YAML_VALUE,
+                                            schema = @Schema(implementation = ClienteDTO.class)),
+                            }
+                    ),
+                    @ApiResponse(description = "Bad Request", responseCode = "400", content = @Content),
+                    @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
+                    @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content)
+            }
+    )
+    public ResponseEntity<List<ProdutoDTO>> criacaoMassiva(MultipartFile file);
 }
 
