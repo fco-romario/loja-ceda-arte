@@ -1,11 +1,12 @@
 package br.com.fco_romario.loja_ceda_artes.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
 import java.util.*;
 
-public class ProdutoDTO implements Serializable {
+public class ProdutoDTO extends RepresentationModel<ProdutoDTO> implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer id;

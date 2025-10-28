@@ -1,22 +1,26 @@
 package br.com.fco_romario.loja_ceda_artes.services;
 
+import br.com.fco_romario.loja_ceda_artes.controllers.ProdutoController;
+import br.com.fco_romario.loja_ceda_artes.dtos.ClienteDTO;
 import br.com.fco_romario.loja_ceda_artes.dtos.ProdutoDTO;
 import br.com.fco_romario.loja_ceda_artes.domain.*;
 import br.com.fco_romario.loja_ceda_artes.exception.BadRequestException;
 import br.com.fco_romario.loja_ceda_artes.exception.FileStorageException;
+import br.com.fco_romario.loja_ceda_artes.exception.IllegalArgumentException;
 import br.com.fco_romario.loja_ceda_artes.exception.ResourceNotFoundException;
 import br.com.fco_romario.loja_ceda_artes.file.importer.contract.FileImporter;
 import br.com.fco_romario.loja_ceda_artes.file.importer.factory.FileImporterFactory;
 import br.com.fco_romario.loja_ceda_artes.mapper.ProdutoMapper;
 import br.com.fco_romario.loja_ceda_artes.repositories.ProdutoRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
 import java.util.*;
-import java.util.stream.Collectors;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
 public class ProdutoService {
@@ -35,22 +39,34 @@ public class ProdutoService {
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Objecto não encontrado id: " + id + ", tipo: " + ProdutoDTO.class.getSimpleName()));
 
-        return ProdutoMapper.toDTO(entity);
+        ProdutoDTO dto = ProdutoMapper.toDTO(entity);
+        adicionaLinksHateoas(dto);
+        return dto;
     }
 
     public List<ProdutoDTO> buscarTodos() {
         return produtoRepository.findAll()
                 .stream()
-                .map(ProdutoMapper::toDTO)
+                .map(entity -> {
+                    ProdutoDTO dto = ProdutoMapper.toDTO(entity);
+                    adicionaLinksHateoas(dto);
+                    return dto;
+                })
                 .toList();
     }
 
     public ProdutoDTO criar(ProdutoDTO produtoDTO) {
         Produto entity = ProdutoMapper.toEntity(produtoDTO);
-        return ProdutoMapper.toDTO(produtoRepository.save(entity));
+
+        ProdutoDTO dto = ProdutoMapper.toDTO(produtoRepository.save(entity));
+        adicionaLinksHateoas(dto);
+        return dto;
     }
 
     public ProdutoDTO atualizar(ProdutoDTO produtoDTO) {
+        if(produtoDTO.getId() == null)
+            throw new IllegalArgumentException("É necessáiro que o produto tenha um ID para atulizar.");
+
         Produto entity =  ProdutoMapper.toEntity(buscarPorId(produtoDTO.getId()));
 
         entity.setNome(produtoDTO.getNome());
@@ -59,7 +75,9 @@ public class ProdutoService {
 //                Arrays.asList(modelMapper.map(produtoDTO.getCategorias(), Categoria.class))
 //        );
 
-        return ProdutoMapper.toDTO(produtoRepository.save(entity));
+        ProdutoDTO dto = ProdutoMapper.toDTO(produtoRepository.save(entity));
+        adicionaLinksHateoas(dto);
+        return dto;
     }
 
     public void deletar(Integer id) {
@@ -86,12 +104,22 @@ public class ProdutoService {
                     .stream()
                     .map(entity -> {
                         var dto = ProdutoMapper.toDTO(entity);
-                        //adicionaLinksHateoas(dto); todo: adicionar suport os Links HATEOAS
+                        adicionaLinksHateoas(dto);
                         return dto;
                     }).toList();
 
         } catch (Exception e) {
             throw new FileStorageException("Erro ao processar o arquivo!");
         }
+    }
+
+    private void adicionaLinksHateoas(ProdutoDTO dto) {
+        dto.add(linkTo(methodOn(ProdutoController.class).buscarPorId(dto.getId())).withSelfRel().withType("GET"));
+        //dto.add(linkTo(methodOn(ProdutoController.class).buscarTodos(0, 12, "asc")).withRel("buscarTodos").withType("GET"));
+        dto.add(linkTo(methodOn(ProdutoController.class).criar(dto)).withRel("criar").withType("POST"));
+        dto.add(linkTo(methodOn(ProdutoController.class)).slash("massCreation").withRel("massCreation").withType("POST"));
+        dto.add(linkTo(methodOn(ProdutoController.class).atualizar(dto)).withRel("atualizar").withType("PUT"));
+        //dto.add(linkTo(methodOn(ProdutoController.class).inativarCliente(dto.getId())).withRel("inativar").withType("PATCH"));
+        dto.add(linkTo(methodOn(ProdutoController.class).deletar(dto.getId())).withRel("deletar").withType("DELETE"));
     }
 }
