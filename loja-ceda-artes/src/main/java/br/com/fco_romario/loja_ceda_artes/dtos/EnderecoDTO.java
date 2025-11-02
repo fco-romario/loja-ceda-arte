@@ -1,6 +1,7 @@
 package br.com.fco_romario.loja_ceda_artes.dtos;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.io.Serializable;
@@ -94,6 +95,10 @@ public class EnderecoDTO extends RepresentationModel<EnderecoDTO> implements Ser
     public CidadeDTO getCidade() {
         return cidade;
     }
+    @JsonIgnore
+    public String getCidadeDescricao() {
+        return cidade.getNome();
+    }
 
     public void setCidade(CidadeDTO cidade) {
         this.cidade = cidade;
@@ -105,6 +110,11 @@ public class EnderecoDTO extends RepresentationModel<EnderecoDTO> implements Ser
 
     public void setCliente(ClienteDTO cliente) {
         this.cliente = cliente;
+    }
+
+    @JsonIgnore
+    public String getEstadoDescricao() {
+        return cidade.getEstado().getNome();
     }
 
     @Override

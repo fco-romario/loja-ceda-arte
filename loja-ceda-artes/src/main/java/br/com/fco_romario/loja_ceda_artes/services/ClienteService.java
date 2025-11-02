@@ -5,10 +5,13 @@ import br.com.fco_romario.loja_ceda_artes.dtos.ClienteDTO;
 import br.com.fco_romario.loja_ceda_artes.domain.Cliente;
 import br.com.fco_romario.loja_ceda_artes.exception.IllegalArgumentException;
 import br.com.fco_romario.loja_ceda_artes.exception.ResourceNotFoundException;
+import br.com.fco_romario.loja_ceda_artes.file.exporter.contract.FileExporter;
+import br.com.fco_romario.loja_ceda_artes.file.exporter.factory.FileExporterFactory;
 import br.com.fco_romario.loja_ceda_artes.mapper.ClienteMapper;
 import br.com.fco_romario.loja_ceda_artes.repositories.ClienteRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -36,6 +39,9 @@ public class ClienteService {
 
     @Autowired
     PagedResourcesAssembler<ClienteDTO> assembler;
+
+    @Autowired
+    private FileExporterFactory exporter;
 
     //todo adicionar validacao com validators @NotNull e @Positive
     public ClienteDTO buscarPorId(Integer id) {
@@ -128,6 +134,20 @@ public class ClienteService {
         dto = ClienteMapper.toDTO(entity);
         adicionaLinksHateoas(dto);
         return dto;
+    }
+
+    public Resource exportarPagina(Pageable paginado, String acceptHeader) {
+        List<ClienteDTO> dtos = clienteRepository.findAll(paginado)
+                .stream()
+                .map(ClienteMapper::toDTO)
+                .toList();
+
+        try {
+            FileExporter exporter = this.exporter.getExporter(acceptHeader);
+            return exporter.exportFile(dtos);
+        } catch (Exception e) {
+            throw new RuntimeException("Erro durando exportação do arquivo", e);
+        }
     }
 
     private void adicionaLinksHateoas(ClienteDTO dto) {

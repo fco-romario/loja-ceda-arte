@@ -1,0 +1,404 @@
+<!-- Created with Jaspersoft Studio version 7.0.1.final using JasperReports Library version 7.0.1-573496633c2b4074e32f433154b543003f7d2498  -->
+<jasperReport name="Blank_A4" language="java" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6c8b0a25-875f-4abd-9c67-74a83a5892ed">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MySQL Connection"/>
+	<style name="Table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+			<topPen lineWidth="0.5" lineColor="#000000"/>
+			<leftPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<rightPen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<dataset name="enderecos" uuid="ba8bba50-30fd-4e3a-b591-ae1a41d567be">
+		<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MySQL Connection"/>
+		<parameter name="P_CLIENTES_ID" class="java.lang.Integer"/>
+		<query language="SQL"><![CDATA[SELECT 
+	endereco.id,
+	endereco.logradouro,
+	endereco.numero,
+	endereco.bairro,
+	endereco.cep,
+	endereco.complemento,
+	cidade.nome cidadeDescricao,
+	estado.nome estadoDescricao
+FROM ceda_arte.enderecos endereco
+JOIN ceda_arte.cidades cidade ON cidade.id = endereco.cidade_fk
+JOIN ceda_arte.estados estado ON estado.id = cidade.estado_fk
+JOIN ceda_arte.clientes cliente ON cliente.id = endereco.cliente_fk
+WHERE 
+	cliente.id =  $P{P_CLIENTES_ID}
+	AND cliente.ativo = 1
+]]></query>
+		<field name="id" class="java.lang.Integer">
+			<property name="com.jaspersoft.studio.field.name" value="id"/>
+			<property name="com.jaspersoft.studio.field.label" value="id"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="enderecos"/>
+		</field>
+		<field name="logradouro" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="logradouro"/>
+			<property name="com.jaspersoft.studio.field.label" value="logradouro"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="enderecos"/>
+		</field>
+		<field name="numero" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="numero"/>
+			<property name="com.jaspersoft.studio.field.label" value="numero"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="enderecos"/>
+		</field>
+		<field name="bairro" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="bairro"/>
+			<property name="com.jaspersoft.studio.field.label" value="bairro"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="enderecos"/>
+		</field>
+		<field name="cep" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="cep"/>
+			<property name="com.jaspersoft.studio.field.label" value="cep"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="enderecos"/>
+		</field>
+		<field name="complemento" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="complemento"/>
+			<property name="com.jaspersoft.studio.field.label" value="complemento"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="enderecos"/>
+		</field>
+		<field name="cidadeDescricao" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nome"/>
+			<property name="com.jaspersoft.studio.field.label" value="cidadeDescricao"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="cidades"/>
+		</field>
+		<field name="estadoDescricao" class="java.lang.String">
+			<property name="com.jaspersoft.studio.field.name" value="nome"/>
+			<property name="com.jaspersoft.studio.field.label" value="estadoDescricao"/>
+			<property name="com.jaspersoft.studio.field.tree.path" value="estados"/>
+		</field>
+		<variable name="id1" calculation="Count" class="java.lang.Integer">
+			<expression><![CDATA[$F{id}]]></expression>
+		</variable>
+	</dataset>
+	<parameter name="P_LOGO" class="java.lang.String"/>
+	<query language="SQL"><![CDATA[SELECT 
+	id,
+	ativo,
+	data_nascimento AS dataNascimento,
+	tipo AS tipoInteger,
+	cpf_ou_cnpj AS cpfOuCnpj,
+	email,
+	nome
+FROM ceda_arte.clientes
+WHERE ativo= 1]]></query>
+	<field name="id" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="id"/>
+		<property name="com.jaspersoft.studio.field.label" value="id"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	</field>
+	<field name="ativo" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="ativo"/>
+		<property name="com.jaspersoft.studio.field.label" value="ativo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	</field>
+	<field name="dataNascimento" class="java.time.LocalDate">
+		<property name="com.jaspersoft.studio.field.name" value="data_nascimento"/>
+		<property name="com.jaspersoft.studio.field.label" value="dataNascimento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	</field>
+	<field name="tipoInteger" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="tipo"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	</field>
+	<field name="cpfOuCnpj" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cpf_ou_cnpj"/>
+		<property name="com.jaspersoft.studio.field.label" value="cpfOuCnpj"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	</field>
+	<field name="email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="email"/>
+		<property name="com.jaspersoft.studio.field.label" value="email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	</field>
+	<field name="nome" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nome"/>
+		<property name="com.jaspersoft.studio.field.label" value="nome"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="clientes"/>
+	</field>
+	<field name="enderecos" class="java.util.List&lt;br.com.fco_romario.loja_ceda_artes.dtos.EnderecoDTO>"/>
+	<background splitType="Stretch"/>
+	<pageHeader height="80" splitType="Stretch">
+		<element kind="image" uuid="3c00aefc-28b7-4cc9-83cb-f08f2bf2090f" x="0" y="0" width="169" height="80">
+			<expression><![CDATA[$P{P_LOGO}]]></expression>
+		</element>
+		<element kind="staticText" uuid="a6ac16de-6c10-43e4-a577-649d98b18142" x="169" y="0" width="388" height="79" fontName="Arial" fontSize="25.0" bold="true" hTextAlign="Center" vTextAlign="Middle">
+			<text><![CDATA[Pedidos do Cliente]]></text>
+		</element>
+	</pageHeader>
+	<detail>
+		<band height="101" splitType="Stretch">
+			<element kind="textField" uuid="d5cd81c9-992a-4e1b-bf70-5b1252cd609d" x="130" y="5" width="310" height="30" italic="false" vTextAlign="Middle">
+				<expression><![CDATA[$F{nome}]]></expression>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="staticText" uuid="673a4daf-07a9-4138-b31c-852ea5aebd01" x="1" y="5" width="129" height="30" fontSize="12.0" italic="false" bold="true" vTextAlign="Middle">
+				<text><![CDATA[Nome:]]></text>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="b2648649-d03d-4693-893c-b24daad43889" x="130" y="35" width="119" height="30" pattern="dd/MM/yyyy" hTextAlign="Left" vTextAlign="Middle">
+				<expression><![CDATA[$F{dataNascimento}]]></expression>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="staticText" uuid="89b1ee33-9aae-440b-9a99-e99e10fa2c89" x="1" y="35" width="129" height="30" fontSize="12.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+				<text><![CDATA[Data de Nascimento:]]></text>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="bfd1c48a-9e71-49b5-868b-57c61a35e089" x="348" y="35" width="92" height="30" hTextAlign="Left" vTextAlign="Middle">
+				<expression><![CDATA[$F{tipoInteger}.equals(1) ? "Física" :
+$F{tipoInteger}.equals(2) ? "Juridica" : "Desconhecido"]]></expression>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="staticText" uuid="1e1c5d46-11f9-4cca-a4f3-ef3b9df0e79a" x="247" y="35" width="100" height="30" fontSize="12.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+				<text><![CDATA[Tipo de Cliente:]]></text>
+				<box leftPadding="5">
+					<pen lineWidth="1.0" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="staticText" uuid="49fbca8d-d1f1-4b72-906e-8ea8c00f7baf" x="440" y="5" width="116" height="90" fontSize="12.0" bold="true" vTextAlign="Middle">
+				<text><![CDATA[Adicionar uma imagem do perfil por uma coluna do banco do tipo Blob]]></text>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="84ef3cfe-2a9a-4bcc-be74-d77a38d1b32a" x="130" y="65" width="119" height="30" vTextAlign="Middle">
+				<expression><![CDATA[$F{email}]]></expression>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="staticText" uuid="41eb5a17-6297-4753-93fa-d3a64fcecc9e" x="1" y="65" width="129" height="30" fontSize="12.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+				<text><![CDATA[Email:]]></text>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="26f75636-0665-4877-bc09-8932ca572a99" x="348" y="65" width="92" height="30" bold="false" hTextAlign="Left" vTextAlign="Middle">
+				<expression><![CDATA[$F{cpfOuCnpj}]]></expression>
+				<box leftPadding="5">
+					<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+			<element kind="textField" uuid="8e314862-0e7d-4d28-80cd-e8ba88e06f14" x="247" y="65" width="100" height="30" fontSize="12.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+				<expression><![CDATA[$F{tipoInteger}.equals(1) ? "CPF:" :
+$F{tipoInteger}.equals(2) ? "Juridica" : "Desconhecido"]]></expression>
+				<box leftPadding="5">
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+			</element>
+		</band>
+		<band height="102">
+			<element kind="component" uuid="e107a9e1-e7bd-424c-a187-8cf6eac32c88" x="-9" y="7" width="571" height="95">
+				<component kind="table">
+					<datasetRun uuid="8c0fa8d6-22ca-4d38-8174-ad8a1b3ff74b" subDataset="enderecos">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{enderecos})
+]]></dataSourceExpression>
+						<parameter name="P_CLIENTES_ID">
+							<expression><![CDATA[$F{id}]]></expression>
+						</parameter>
+					</datasetRun>
+					<column kind="single" uuid="bff0f48d-3882-44ca-83ba-655085c89f52" width="110">
+						<tableFooter height="30" rowSpan="1" style="Table_TH"/>
+						<columnHeader height="30" rowSpan="1" style="Table_CH">
+							<element kind="staticText" uuid="7f462f97-9524-4be9-a61f-f1c29e6cd833" x="0" y="0" width="110" height="30" bold="true" hTextAlign="Left" vTextAlign="Middle">
+								<text><![CDATA[Logradouro]]></text>
+								<box leftPadding="5"/>
+							</element>
+						</columnHeader>
+						<detailCell height="30" style="Table_TD">
+							<element kind="textField" uuid="31c2a527-f96e-499c-9824-7a7d701f5fa8" x="0" y="0" width="110" height="30" textAdjust="StretchHeight" vTextAlign="Middle">
+								<expression><![CDATA[$F{logradouro}]]></expression>
+								<box leftPadding="5"/>
+							</element>
+						</detailCell>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column1"/>
+					</column>
+					<column kind="single" uuid="eb2ce56f-7d6c-43e9-80ea-c4a3d805cf3e" width="50">
+						<tableFooter height="30" rowSpan="1" style="Table_TH"/>
+						<columnHeader height="30" rowSpan="1" style="Table_CH">
+							<element kind="staticText" uuid="f9af5257-3687-49ca-b224-966bb01dbac1" x="0" y="0" width="50" height="30" bold="true" hTextAlign="Left" vTextAlign="Middle">
+								<text><![CDATA[Número]]></text>
+								<box leftPadding="5"/>
+							</element>
+						</columnHeader>
+						<detailCell height="30" style="Table_TD">
+							<element kind="textField" uuid="f8f7c1eb-f619-48e2-8304-ffbe5dacd0ae" x="0" y="0" width="50" height="30" textAdjust="StretchHeight" vTextAlign="Middle">
+								<expression><![CDATA[$F{numero}]]></expression>
+								<box leftPadding="5"/>
+							</element>
+						</detailCell>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column2"/>
+					</column>
+					<column kind="single" uuid="23b43ee0-5c7b-471c-8f43-2b848f79fbc1" width="90">
+						<tableFooter height="30" rowSpan="1" style="Table_TH"/>
+						<columnHeader height="30" rowSpan="1" style="Table_CH">
+							<element kind="staticText" uuid="eb6860f4-2e49-4c55-a472-134ba16be289" x="0" y="0" width="90" height="30" bold="true" hTextAlign="Left" vTextAlign="Middle">
+								<text><![CDATA[Bairro]]></text>
+								<box leftPadding="5"/>
+							</element>
+						</columnHeader>
+						<detailCell height="30" style="Table_TD">
+							<element kind="textField" uuid="9db4561c-1037-4b35-affc-2e61e173da5b" x="0" y="0" width="90" height="30" textAdjust="StretchHeight" vTextAlign="Middle">
+								<expression><![CDATA[$F{bairro}]]></expression>
+								<box leftPadding="5"/>
+							</element>
+						</detailCell>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column3"/>
+					</column>
+					<column kind="single" uuid="12f54d18-d46a-4eaa-87ae-0dedda5470e9" width="50">
+						<tableFooter height="30" rowSpan="1" style="Table_TH"/>
+						<columnHeader height="30" rowSpan="1" style="Table_CH">
+							<element kind="staticText" uuid="c7576466-b2b2-48fc-8647-04bab99173af" x="0" y="0" width="50" height="30" bold="true" hTextAlign="Left" vTextAlign="Middle">
+								<text><![CDATA[CEP]]></text>
+								<box leftPadding="5"/>
+							</element>
+						</columnHeader>
+						<detailCell height="30" style="Table_TD">
+							<element kind="textField" uuid="0937b6c5-9051-46a0-95ea-a2bd9aee9f5a" x="0" y="0" width="50" height="30" textAdjust="StretchHeight" vTextAlign="Middle">
+								<expression><![CDATA[$F{cep}]]></expression>
+								<box leftPadding="5"/>
+							</element>
+						</detailCell>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column4"/>
+					</column>
+					<column kind="single" uuid="d3dbdbce-755e-4d3e-9af1-1a7d295227a5" width="90">
+						<tableFooter height="30" rowSpan="1" style="Table_TH"/>
+						<columnHeader height="30" rowSpan="1" style="Table_CH">
+							<element kind="staticText" uuid="e8a3e77c-1e12-4494-a89a-b6675d60559e" x="0" y="0" width="90" height="30" bold="true" hTextAlign="Left" vTextAlign="Middle">
+								<text><![CDATA[Complemento]]></text>
+								<box leftPadding="5"/>
+							</element>
+						</columnHeader>
+						<detailCell height="30" style="Table_TD">
+							<element kind="textField" uuid="430166d5-709b-4105-a563-a3b292da95ba" x="0" y="0" width="90" height="30" textAdjust="StretchHeight" vTextAlign="Middle">
+								<expression><![CDATA[$F{complemento}]]></expression>
+								<box leftPadding="5"/>
+							</element>
+						</detailCell>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column5"/>
+					</column>
+					<column kind="single" uuid="d370ba87-b9e8-4844-9211-68ff71a107c0" width="90">
+						<tableFooter height="30" rowSpan="1" style="Table_TH">
+							<element kind="staticText" uuid="94a66b5b-c2de-411b-a820-18f59165d872" x="0" y="0" width="90" height="30" fontSize="12.0" bold="true" hTextAlign="Left" vTextAlign="Middle">
+								<text><![CDATA[Quantidade:]]></text>
+								<box leftPadding="5"/>
+							</element>
+						</tableFooter>
+						<columnHeader height="30" rowSpan="1" style="Table_CH">
+							<element kind="staticText" uuid="be3d4619-03c4-4368-9dbe-66c98fd322bb" x="0" y="0" width="90" height="30" bold="true" hTextAlign="Left" vTextAlign="Middle">
+								<text><![CDATA[Cidade]]></text>
+								<box leftPadding="5"/>
+							</element>
+						</columnHeader>
+						<detailCell height="30" style="Table_TD">
+							<element kind="textField" uuid="74af0c5d-cbc6-4d2c-a967-7a47f172d179" x="0" y="0" width="90" height="30" textAdjust="StretchHeight" vTextAlign="Middle">
+								<expression><![CDATA[$F{cidadeDescricao}]]></expression>
+								<box leftPadding="5"/>
+							</element>
+						</detailCell>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column6"/>
+					</column>
+					<column kind="single" uuid="71788333-9b8c-4ce1-bec3-63a971aa048e" width="90">
+						<tableFooter height="30" rowSpan="1" style="Table_TH">
+							<element kind="textField" uuid="10fdac50-e26b-4fbc-b7ce-9f36b8c609b2" x="0" y="0" width="90" height="30" vTextAlign="Middle">
+								<expression><![CDATA[$V{id1}]]></expression>
+								<box leftPadding="5"/>
+							</element>
+						</tableFooter>
+						<columnHeader height="30" rowSpan="1" style="Table_CH">
+							<element kind="staticText" uuid="1c7c267e-f120-4156-9284-4001950357e9" x="0" y="0" width="90" height="30" bold="true" hTextAlign="Left" vTextAlign="Middle">
+								<text><![CDATA[Estado]]></text>
+								<box leftPadding="5"/>
+							</element>
+						</columnHeader>
+						<detailCell height="30" style="Table_TD">
+							<element kind="textField" uuid="45eed255-8304-49c7-93e8-75af7cba9534" x="0" y="0" width="90" height="30" textAdjust="StretchHeight" vTextAlign="Middle">
+								<expression><![CDATA[$F{estadoDescricao}]]></expression>
+								<box leftPadding="5"/>
+							</element>
+						</detailCell>
+						<property name="com.jaspersoft.studio.components.table.model.column.name" value="Column7"/>
+					</column>
+				</component>
+				<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+				<property name="com.jaspersoft.studio.table.style.table_header" value="Table_TH"/>
+				<property name="com.jaspersoft.studio.table.style.column_header" value="Table_CH"/>
+				<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
+			</element>
+		</band>
+		<band height="1">
+			<element kind="break" uuid="303db918-fa72-4cef-886c-f3875011ef9f" x="0" y="0" width="97" height="1"/>
+		</band>
+	</detail>
+	<columnFooter height="45" splitType="Stretch"/>
+	<pageFooter height="54" splitType="Stretch"/>
+	<summary height="42" splitType="Stretch"/>
+</jasperReport>

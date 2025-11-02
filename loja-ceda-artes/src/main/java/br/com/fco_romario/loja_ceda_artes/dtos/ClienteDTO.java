@@ -99,6 +99,10 @@ public class ClienteDTO extends RepresentationModel<ClienteDTO>  implements Seri
         return TipoCliente.toEnum(tipo);
     }
 
+    public Integer getTipoInteger() {
+        return tipo;
+    }
+
     public void setTipo(TipoCliente tipo) {
         this.tipo = tipo.getCodigo();
     }
