@@ -2,10 +2,21 @@ package br.com.fco_romario.loja_ceda_artes.dtos;
 
 import br.com.fco_romario.loja_ceda_artes.enums.EstadoPagamento;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "@type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = PagamentoComCartaoDTO.class, name = "pagamentoComCartao"),
+        @JsonSubTypes.Type(value = PagamentoComBoletoDTO.class, name = "pagamentoComBoleto")
+})
 public class PagamentoDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 

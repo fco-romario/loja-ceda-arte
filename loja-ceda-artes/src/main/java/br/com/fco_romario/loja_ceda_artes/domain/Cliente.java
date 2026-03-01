@@ -33,6 +33,9 @@ public class Cliente implements Serializable {
     @Column(nullable = false)
     private Integer tipo;
 
+    @Column(nullable = false)
+    private Boolean ativo = true;//todo: criar uma classe abstrada de auditoriar e a class que adiciona o usuario logado
+
     @ElementCollection
     @CollectionTable(name = "telefones")
     private Set<String> telefones = new HashSet<>();
@@ -54,6 +57,16 @@ public class Cliente implements Serializable {
         this.email = email;
         this.cpfOuCnpj = cpfOuCnpj;
         this.tipo = tipo.getCodigo();
+    }
+
+    public Cliente(Integer id, String nome, LocalDate dataNascimento, String email, String cpfOuCnpj, TipoCliente tipo, Boolean ativo) {
+        this.id = id;
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
+        this.email = email;
+        this.cpfOuCnpj = cpfOuCnpj;
+        this.tipo = tipo.getCodigo();
+        this.ativo = ativo;
     }
 
     public Integer getId() {
@@ -128,15 +141,23 @@ public class Cliente implements Serializable {
         this.pedidos = pedidos;
     }
 
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Cliente cliente = (Cliente) o;
-        return Objects.equals(getId(), cliente.getId()) && Objects.equals(getNome(), cliente.getNome()) && Objects.equals(getDataNascimento(), cliente.getDataNascimento()) && Objects.equals(getEmail(), cliente.getEmail()) && Objects.equals(getCpfOuCnpj(), cliente.getCpfOuCnpj()) && Objects.equals(getTipo(), cliente.getTipo()) && Objects.equals(getTelefones(), cliente.getTelefones()) && Objects.equals(getEnderecos(), cliente.getEnderecos()) && Objects.equals(getPedidos(), cliente.getPedidos());
+        return Objects.equals(getId(), cliente.getId()) && Objects.equals(getNome(), cliente.getNome()) && Objects.equals(getDataNascimento(), cliente.getDataNascimento()) && Objects.equals(getEmail(), cliente.getEmail()) && Objects.equals(getCpfOuCnpj(), cliente.getCpfOuCnpj()) && Objects.equals(getTipo(), cliente.getTipo()) && Objects.equals(getAtivo(), cliente.getAtivo()) && Objects.equals(getTelefones(), cliente.getTelefones()) && Objects.equals(getEnderecos(), cliente.getEnderecos()) && Objects.equals(getPedidos(), cliente.getPedidos());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getNome(), getDataNascimento(), getEmail(), getCpfOuCnpj(), getTipo(), getTelefones(), getEnderecos(), getPedidos());
+        return Objects.hash(getId(), getNome(), getDataNascimento(), getEmail(), getCpfOuCnpj(), getTipo(), getAtivo(), getTelefones(), getEnderecos(), getPedidos());
     }
 }

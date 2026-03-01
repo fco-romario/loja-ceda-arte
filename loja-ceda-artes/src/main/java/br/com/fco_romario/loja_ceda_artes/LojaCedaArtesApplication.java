@@ -75,8 +75,8 @@ public class LojaCedaArtesApplication implements CommandLineRunner {
 
         LocalDate nascimento = LocalDate.of(1995, 7, 12);
 
-        Cliente cl1 = new Cliente(null, "Maria Alves", nascimento, "test@gmail.com", "501.448.080-21", TipoCliente.PESSOA_FISICA);
-        Cliente cl2 = new Cliente(null, "Felipe de Sousa", nascimento, "test2@gmail.com", "731.444.800-02", TipoCliente.PESSOA_JURIDICA);
+        Cliente cl1 = new Cliente(null, "Maria Alves", nascimento, "test@gmail.com", "50144808021", TipoCliente.PESSOA_FISICA);
+        Cliente cl2 = new Cliente(null, "Felipe de Sousa", nascimento, "test2@gmail.com", "73144480002", TipoCliente.PESSOA_JURIDICA);
 
         cl1.getTelefones().addAll(Arrays.asList("85900000000", "85988888888"));
         cl2.getTelefones().addAll(Arrays.asList("85900000000", "85988888888"));

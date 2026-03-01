@@ -37,7 +37,7 @@ public class PagamentoMapperFactory {
             PagamentoComBoleto entity = new PagamentoComBoleto();
             entity.setId(boleto.getId());
             entity.setEstado(boleto.getEstado());
-            entity.setPedio(PedidoMapper.toEntity(boleto.getPedio()));
+            //entity.setPedio(PedidoMapper.toEntity(boleto.getPedio()));
             entity.setDataVencimento(boleto.getDataVencimento());
             entity.setDataPagamento(boleto.getDataPagamento());
 
@@ -46,7 +46,7 @@ public class PagamentoMapperFactory {
             PagamentoComCartao entity = new PagamentoComCartao();
             entity.setId(cartao.getId());
             entity.setEstado(cartao.getEstado());
-            entity.setPedio(PedidoMapper.toEntity(cartao.getPedio()));
+            //entity.setPedio(PedidoMapper.toEntity(cartao.getPedio()));
             entity.setNumeroDeParcelas(cartao.getNumeroDeParcelas());
 
             return entity;

@@ -8,45 +8,45 @@ import java.util.Objects;
 public class ItemPedidoDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @JsonIgnore
-    private ItemPedidoPKDTO id = new ItemPedidoPKDTO();//classe composta de acossiciação
-
+    //@JsonIgnore
+    //private ItemPedidoPKDTO id = new ItemPedidoPKDTO();//classe composta de acossiciação
+    private ProdutoDTO produto;
+    private PedidoDTO pedido;
     private Double desconto;
     private Integer quantidade;
     private Double preco;
 
     public ItemPedidoDTO() {}
 
-    public ItemPedidoDTO(PedidoDTO pedido, ProdutoDTO produto, Double desconto, Integer quantidade, Double preco) {
-        this.id.setPedido(pedido);
-        this.id.setProduto(produto);
-        this.desconto = desconto;
-        this.quantidade = quantidade;
-        this.preco = preco;
-    }
+//    public ItemPedidoDTO(PedidoDTO pedido, ProdutoDTO produto, Double desconto, Integer quantidade, Double preco) {
+//        this.id.setPedido(pedido);
+//        this.id.setProduto(produto);
+//        this.desconto = desconto;
+//        this.quantidade = quantidade;
+//        this.preco = preco;
+//    }
 
     public ItemPedidoDTO(ProdutoDTO produto, Double desconto, Integer quantidade, Double preco) {
-        this.id.setProduto(produto);
+        this.produto = produto;
         this.desconto = desconto;
         this.quantidade = quantidade;
         this.preco = preco;
-    }
-
-    @JsonIgnore
-    public PedidoDTO getPedido() {
-        return this.id.getPedido();
     }
 
     public ProdutoDTO getProduto() {
-        return this.id.getProduto();
+        return produto;
     }
 
-    public ItemPedidoPKDTO getId() {
-        return id;
+    public void setProduto(ProdutoDTO produto) {
+        this.produto = produto;
     }
 
-    public void setId(ItemPedidoPKDTO id) {
-        this.id = id;
+    public PedidoDTO getPedido() {
+        return pedido;
+    }
+
+    public void setPedido(PedidoDTO pedido) {
+        this.pedido = pedido;
     }
 
     public Double getDesconto() {
@@ -77,11 +77,11 @@ public class ItemPedidoDTO implements Serializable {
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         ItemPedidoDTO that = (ItemPedidoDTO) o;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getDesconto(), that.getDesconto()) && Objects.equals(getQuantidade(), that.getQuantidade()) && Objects.equals(getPreco(), that.getPreco());
+        return Objects.equals(getProduto(), that.getProduto()) && Objects.equals(getPedido(), that.getPedido()) && Objects.equals(getDesconto(), that.getDesconto()) && Objects.equals(getQuantidade(), that.getQuantidade()) && Objects.equals(getPreco(), that.getPreco());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getDesconto(), getQuantidade(), getPreco());
+        return Objects.hash(getProduto(), getPedido(), getDesconto(), getQuantidade(), getPreco());
     }
 }

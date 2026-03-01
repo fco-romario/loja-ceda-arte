@@ -10,7 +10,7 @@ public class ClienteMapper {
     public static Cliente toEntity(ClienteDTO dto) {
         if(dto == null) return null;
 
-        Cliente entity = new Cliente(dto.getId(),dto.getNome() ,dto.getDataNascimento(), dto.getEmail(), dto.getCpfOuCnpj(), dto.getTipo());
+        Cliente entity = new Cliente(dto.getId(),dto.getNome() ,dto.getDataNascimento(), dto.getEmail(), dto.getCpfOuCnpj(), dto.getTipo(), dto.getAtivo());
         entity.getTelefones().addAll(dto.getTelefones());
         entity.getEnderecos().addAll(
                 dto.getEnderecos()
@@ -18,13 +18,14 @@ public class ClienteMapper {
                         .map(EnderecoMapper::toEntity)
                         .toList()
         );
+        entity.getEnderecos().forEach(t -> t.setCliente(entity));
         return entity;
     }
 
     public static ClienteDTO toDTO(Cliente entity) {
         if(entity == null) return null;
 
-        ClienteDTO dto = new ClienteDTO(entity.getId(),entity.getNome() ,entity.getDataNascimento(), entity.getEmail(), entity.getCpfOuCnpj(), entity.getTipo());
+        ClienteDTO dto = new ClienteDTO(entity.getId(),entity.getNome() ,entity.getDataNascimento(), entity.getEmail(), entity.getCpfOuCnpj(), entity.getTipo(), entity.getAtivo());
         dto.getTelefones().addAll(entity.getTelefones());
         dto.getEnderecos().addAll(
             entity.getEnderecos()
